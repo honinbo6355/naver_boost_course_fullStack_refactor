@@ -8,11 +8,13 @@ spring:
     username: dbuser1
     password: 123123
   jpa:
-    hibernate:
-      ddl-auto: create
+#    hibernate:
+#      ddl-auto: create
     properties:
       hibernate:
         format_sql: true
+  thymeleaf:
+    cache: false
 
 logging:
   level:

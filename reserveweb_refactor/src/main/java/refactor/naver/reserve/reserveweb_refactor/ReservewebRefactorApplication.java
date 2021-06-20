@@ -9,5 +9,4 @@ public class ReservewebRefactorApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(ReservewebRefactorApplication.class, args);
 	}
-
 }

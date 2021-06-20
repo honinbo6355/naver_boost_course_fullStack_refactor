@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorator="../layout/default_layout">
+
+    <th:block layout:fragment="css">
+        <style>
+            .container_visual {
+                height: 414px;
+            }
+        </style>
+    </th:block>
+
+    <th:block layout:fragment="content">
+        <input type="hidden" id="displayInfoId" th:value="${displayInfoId}">
+
+        <div class="ct">
+            <div class="ct_wrap">
+                <div class="top_title">
+                    <a href="javascript:void(0)" class="btn_back" title="이전 화면으로 이동" onclick="window.history.go(-1)"> <i class="fn fn-backward1"></i> </a>
+                    <h2><span class="title"></span></h2>
+                </div>
+                <div class="section_visual">
+                    <div class="pagination">
+                        <div class="bg_pagination"></div>
+                        <div class="figure_pagination">
+                            <span id="currentPage" class="num">1</span>
+                            <span class="num off">/ <span id="totalPage">1</span></span>
+                        </div>
+                    </div>
+                    <div class="group_visual">
+                        <div>
+                            <div class="container_visual" style="width: 414px;">
+                                <ul class="visual_img detail_swipe" id="productImageList">
+
+                                </ul>
+                            </div>
+                            <div id="prevNav" class="prev" style="display:none;">
+                                <div class="prev_inn">
+                                    <a href="#" class="btn_prev" title="이전">
+                                        <!-- [D] 첫 이미지 이면 off 클래스 추가 -->
+                                        <i class="spr_book2 ico_arr6_lt off"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="nextNav" class="nxt" style="display:none;">
+                                <div class="nxt_inn">
+                                    <a href="#" class="btn_nxt" title="다음">
+                                        <i class="spr_book2 ico_arr6_rt"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="group_btn_goto"  style="display: none;">
+                        <a class="btn_goto_home" title="홈페이지" href="#" target="siteUrl"> <i class="fn fn-home1"></i> </a>
+                        <a class="btn_goto_tel" title="전화" href="#"> <i class="fn fn-call1"></i> </a>
+                        <a class="btn_goto_mail" title="이메일" href="#"> <i class="fn fn-mail1"></i> </a>
+                        <a href="#" class="btn_goto_path" title="길찾기"> <i class="fn fn-path-find1"></i> </a>
+                        <a href="#" class="fn fn-share1 naver-splugin btn_goto_share" title="공유하기"></a>
+                    </div>
+                </div>
+                <div class="section_store_details">
+                    <!-- [D] 펼쳐보기 클릭 시 store_details에 close3 제거 -->
+                    <div class="store_details close3" id="productDscContainer">
+                        <p class="dsc" id="productDsc">
+                        </p>
+                    </div>
+                    <!-- [D] 토글 상황에 따라 bk_more에 display:none 추가 -->
+                    <a href="#" class="bk_more _open" id="dscOpenBtn"> <span class="bk_more_txt">펼쳐보기</span> <i class="fn fn-down2"></i> </a>
+                    <a href="#" class="bk_more _close" id="dscCloseBtn" style="display: none;"> <span class="bk_more_txt">접기</span> <i class="fn fn-up2"></i> </a>
+                </div>
+                <div class="section_event">
+                    <div class="event_info_box">
+                        <div class="event_info_tit">
+                            <h4 class="in_tit"> <i class="spr_book ico_evt"></i> <span>이벤트 정보</span> </h4>
+                        </div>
+                        <div class="event_info">
+                            <div class="in_dsc">[네이버예약 특별할인]<br>R석 50%, S석 60% 할인</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section_btn"> <button type="button" class="bk_btn" id="reserveBtn"> <i class="fn fn-nbooking-calender2"></i> <span>예매하기</span> </button> </div>
+                <div class="section_review_list">
+                    <div class="review_box">
+                        <h3 class="title_h3">예매자 한줄평</h3>
+                        <div class="short_review_area">
+                            <div class="grade_area">
+                                <!-- [D] 별점 graph_value는 퍼센트 환산하여 width 값을 넣어줌 -->
+                                <span class="graph_mask"> <em class="graph_value" id="scoreGraph" style="width: 84%;"></em> </span>
+                                <strong class="text_value"> <span id="averageScore">4.2</span> <em class="total">5.0</em> </strong>
+                                <span class="join_count"><em class="green" id="totalCommentCnt">52건</em> 등록</span>
+                            </div>
+                            <div id="reviewContainer">
+
+                            </div>
+                        </div>
+                        <p class="guide"> <i class="spr_book2 ico_bell"></i> <span>네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.</span> </p>
+                    </div>
+                    <a id="reviewMore" class="btn_review_more" style="display:none;"> <span>예매자 한줄평 더보기</span> <i class="fn fn-forward1"></i> </a>
+                </div>
+                <div class="section_info_tab">
+                    <!-- [D] tab 선택 시 anchor에 active 추가 -->
+                    <ul class="info_tab_lst" id="detailInfoTab">
+                        <li class="item _detail" id="detailInfo">
+                            <a href="javascript:void(0)" class="anchor active"> <span>상세정보</span> </a>
+                        </li>
+                        <li class="item _path" id="detailLocation">
+                            <a href="javascript:void(0)" class="anchor"> <span>오시는길</span> </a>
+                        </li>
+                    </ul>
+                    <!-- [D] 상세정보 외 다른 탭 선택 시 detail_area_wrap에 hide 추가 -->
+                    <div class="detail_area_wrap" id="detailInfoDiv">
+                        <div class="detail_area">
+                            <div class="detail_info">
+                                <h3 class="blind">상세정보</h3>
+                                <ul class="detail_info_group">
+                                    <li class="detail_info_lst">
+                                        <strong class="in_tit">[소개]</strong>
+                                        <p class="in_dsc" id="productIntro">
+
+                                        </p>
+                                    </li>
+                                    <li class="detail_info_lst"> <strong class="in_tit">[공지사항]</strong>
+                                        <ul class="in_img_group">
+                                            <li class="in_img_lst"> <img alt="" class="img_thumb" src="https://ssl.phinf.net/naverbooking/20170131_238/14858250829398Pnx6_JPEG/%B0%F8%C1%F6%BB%E7%C7%D7.jpg?type=a1000"> </li>
+                                        </ul>
+                                    </li>
+                                    <!-- <li class="detail_info_lst"> <strong class="in_tit">[공연정보]</strong>
+                                        <ul class="in_img_group">
+                                            <li class="in_img_lst"> <img alt="" class="img_thumb" src="https://ssl.phinf.net/naverbooking/20170131_255/1485825099482NmYMe_JPEG/%B0%F8%BF%AC%C1%A4%BA%B8.jpg?type=a1000"> </li>
+                                        </ul>
+                                    </li> -->
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- [D] 오시는길 외 다른 탭 선택 시 detail_location에 hide 추가 -->
+                    <div class="detail_location hide" id="detailLocationDiv">
+                        <div class="box_store_info no_topline">
+                            <a href="#" class="store_location" title="지도웹으로 연결">
+                                <img id="locationMapImg" class="store_map img_thumb" alt="map" src="https://simg.pstatic.net/static.map/image?version=1.1&amp;crs=EPSG:4326&amp;baselayer=bl_vc_bg&amp;exception=xml&amp;scale=2&amp;caller=mw_smart_booking&amp;overlayers=ol_vc_an&amp;center=127.0011948,37.5717079&amp;markers=type,default2,127.0011948,37.5717079&amp;level=11&amp;w=340&amp;h=150">
+                                <span class="img_border"></span>
+                                <span class="btn_map"><i class="spr_book2 ico_mapview"></i></span>
+                            </a>
+                            <h3 class="store_name">엔에이치엔티켓링크(주)</h3>
+                            <div class="store_info">
+                                <div class="store_addr_wrap">
+                                    <span class="fn fn-pin2"></span>
+                                    <p id="placeStreet" class="store_addr store_addr_bold">서울특별시 종로구 종로33길 15 </p>
+                                    <p class="store_addr">
+                                        <span class="addr_old">지번</span>
+                                        <span id="placeLot" class="addr_old_detail">서울특별시 종로구 연지동 270 </span>
+                                    </p>
+                                    <p id="placeName" class="store_addr addr_detail">두산아트센터 연강홀</p>
+                                </div>
+                                <div class="lst_store_info_wrap">
+                                    <ul class="lst_store_info">
+                                        <li class="item"> <span class="item_lt"> <i class="fn fn-call2"></i> <span class="sr_only">전화번호</span> </span> <span class="item_rt"> <a id="telephone" href="tel:02-548-0597" class="store_tel">02-548-0597</a></span> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- [D] 모바일 브라우저에서 접근 시 column2 추가와 btn_navigation 요소 추가 -->
+                            <div class="bottom_common_path column2">
+                                <a href="javascript:void(0)" class="btn_path"> <i class="fn fn-path-find2"></i> <span>길찾기</span> </a>
+                                <a href="javascript:void(0)" class="btn_navigation before"> <i class="fn fn-navigation2"></i> <span>내비게이션</span> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="photoviwer"></div>
+    </th:block>
+    <th:block layout:fragment="script">
+        <script type="text/javascript" th:src="@{/resources/js/detail.js}"></script>
+    </th:block>
+</html>

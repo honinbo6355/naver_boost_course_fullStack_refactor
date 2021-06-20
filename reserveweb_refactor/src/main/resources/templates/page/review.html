@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html
+        lang="ko"
+        xmlns:th="http://www.thymeleaf.org"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorator="../layout/default_layout">
+
+    <th:block layout:fragment="content">
+        <input type="hidden" id="displayInfoId" th:value="${displayInfoId}">
+
+        <div class="ct">
+            <div class="wrap_review_list">
+                <div class="review_header">
+                    <div class="top_title gr">
+                        <a href="javascript:void(0)" class="btn_back" title="이전 화면으로 이동" onclick="window.history.go(-1)"> <i class="fn fn-backward1"></i> </a>
+                        <h2><a class="title" href="#">오디컴퍼니 주식회사</a></h2>
+                    </div>
+                </div>
+                <div class="section_review_list">
+                    <div class="review_box">
+                        <h3 class="title_h3">예매자 한줄평</h3>
+                        <div class="short_review_area">
+                            <div class="grade_area">
+                                <span class="graph_mask">
+                                    <em id="scoreGraph" class="graph_value" style="width: 88%;"></em>
+                                </span>
+                                <strong class="text_value"> <span id="averageScore">4.4</span> <em class="total">5.0</em> </strong>
+                                <span class="join_count"><em class="green" id="totalCommentCnt">20건</em> 등록</span>
+                            </div>
+                            <ul class="list_short_review" id="reviewUl">
+
+                            </ul>
+                        </div>
+                        <p class="guide"> <i class="spr_book2 ico_bell"></i> <span>네이버 예약을 통해 실제 방문한 이용자가 남긴 평가입니다.</span> </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </th:block>
+    <th:block layout:fragment="script">
+        <script type="text/javascript" th:src="@{/resources/js/review.js}"></script>
+    </th:block>
+</html>

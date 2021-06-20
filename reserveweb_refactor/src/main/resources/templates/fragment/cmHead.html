@@ -1,0 +1,57 @@
+<html
+    lang="ko"
+    xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+    <th:block th:fragment="cmHead">
+        <meta charset="utf-8" />
+        <meta name="description" content="네이버 예약, 네이버 예약이 연동된 곳 어디서나 바로 예약하고, 네이버 예약 홈(나의예약)에서 모두 관리할 수 있습니다." />
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no" />
+        <title>네이버 예약</title>
+        <link th:href="@{/css/style.css}" rel="stylesheet">
+        <link th:href="@{/css/bookinglogin.css}" rel="stylesheet">
+        <link th:href="@{/css/custom.css}" rel="stylesheet">
+        <th:block layout:fragment="css"></th:block>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="http://ajax.microsoft.com/ajax/jquery.templates/beta1/jquery.tmpl.min.js"></script>
+        <script type="text/javascript" th:src="@{/js/common.js}"></script>
+
+        <script type="text/x-jquery-tmpl" id="commentItemTmpl">
+			<li class="list_item">
+                <div>
+                    {{if commentImages.saveFileName}}
+                        <div class="review_area">
+                            <div class="thumb_area">
+                                <a href="#" class="thumb" title="이미지 크게 보기">
+                                    <img width="90" height="90" class="img_vertical_top" th:src="@{/${commentImages.saveFileName}}" alt="리뷰이미지">
+                                </a>
+                                <span class="img_count" style="display:none;">1</span>
+                            </div>
+                            <h4 class="resoc_name"></h4>
+                            <p class="review">${comment}</p>
+                        </div>
+                    {{else}}
+                        <div class="review_area no_img">
+                            <h4 class="resoc_name"></h4>
+                            <p class="review">${comment}</p>
+                        </div>
+                    {{/if}}
+                    <div class="info_area">
+                        <div class="review_info"> <span class="grade">${score}</span> <span class="name">${reservationEmail}</span> <span class="date">${reservationDate} 방문</span> </div>
+                    </div>
+                </div>
+            </li>
+        </script>
+
+        <script type="text/x-jquery-tmpl" id="productImageItemTmpl">
+            <li class="item" style="width: 414px;"> <img alt="" class="img_thumb" th:src="@{/${saveFileName}}"> <span class="img_bg"></span>
+                <div class="visual_txt">
+                    <div class="visual_txt_inn">
+                        <h2 class="visual_txt_tit"> <span>${title}</span> </h2>
+                        <p class="visual_txt_dsc"></p>
+                    </div>
+                </div>
+            </li>
+        </script>
+    </th:block>
+</html>

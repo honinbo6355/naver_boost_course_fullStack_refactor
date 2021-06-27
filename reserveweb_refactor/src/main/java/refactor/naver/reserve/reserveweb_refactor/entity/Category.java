@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "category")
@@ -12,7 +13,11 @@ import javax.persistence.*;
 @Setter
 public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private int id;
+
     private String name;
     private int count;
+
+    @OneToMany
+    private List<Product> productList;
 }

@@ -11,7 +11,8 @@ import javax.persistence.*;
 public class Sample {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private long id;
+
     private String title;
     private String content;
 }

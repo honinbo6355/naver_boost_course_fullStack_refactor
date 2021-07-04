@@ -24,6 +24,6 @@ public class Product {
     @ManyToOne
     private Category category;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<DisplayInfo> displayInfoList;
 }

@@ -1,8 +1,8 @@
 package refactor.naver.reserve.reserveweb_refactor.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -11,13 +11,21 @@ import java.util.List;
 @Table(name = "category")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Category {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     private String name;
-    private int count;
+    private long count;
 
-    @OneToMany
+    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
     private List<Product> productList;
+
+    public Category(int id, String name, long count) {
+        this.id = id;
+        this.name = name;
+        this.count = count;
+    }
 }
+

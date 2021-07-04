@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import refactor.naver.reserve.reserveweb_refactor.dto.CategoryResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.service.CategoryService;
 
 @RestController
@@ -18,14 +19,14 @@ public class ReserveApiController {
     }
 
     @GetMapping("categories")
-    public ResponseEntity getCategories() {
-        ResponseEntity response = null;
+    public ResponseEntity<CategoryResponseDto> getCategories() {
+        ResponseEntity<CategoryResponseDto> response = null;
 
         try {
-            response = new ResponseEntity(categoryService.findCategory(), HttpStatus.OK);
+            response = new ResponseEntity<>(categoryService.findCategory(), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
-            response = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+            response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return response;

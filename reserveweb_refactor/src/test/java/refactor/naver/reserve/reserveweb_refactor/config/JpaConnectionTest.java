@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import refactor.naver.reserve.reserveweb_refactor.entity.Sample;
-import refactor.naver.reserve.reserveweb_refactor.repository.CategoryQuerydslRepository;
+import refactor.naver.reserve.reserveweb_refactor.repository.CustomQuerydslRepository;
 import refactor.naver.reserve.reserveweb_refactor.repository.SampleQuerydslRepository;
 import refactor.naver.reserve.reserveweb_refactor.repository.SampleRepository;
 
@@ -21,7 +21,7 @@ public class JpaConnectionTest {
     private SampleQuerydslRepository sampleQuerydslRepository;
 
     @Autowired
-    private CategoryQuerydslRepository categoryQuerydslRepository;
+    private CustomQuerydslRepository customQuerydslRepository;
 
     @Test
     public void saveSample() {
@@ -38,6 +38,6 @@ public class JpaConnectionTest {
 
     @Test
     public void findCategories() {
-        System.out.println(categoryQuerydslRepository.findCategory());
+        System.out.println(customQuerydslRepository.findCategory());
     }
 }

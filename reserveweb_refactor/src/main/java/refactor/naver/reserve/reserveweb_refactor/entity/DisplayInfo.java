@@ -26,5 +26,6 @@ public class DisplayInfo extends SystemDate {
     private String telephone;
 
     @ManyToOne
+    @JoinColumn(name = "product_id")
     private Product product;
 }

@@ -10,7 +10,7 @@ import java.util.List;
 @Table(name = "product")
 @Getter
 @Setter
-public class Product {
+public class Product extends SystemDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,9 +21,16 @@ public class Product {
     private String placeName;
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id")
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<DisplayInfo> displayInfoList;
+
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "product")
+    private Promotion promotion;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private List<ProductImage> productImageList;
 }

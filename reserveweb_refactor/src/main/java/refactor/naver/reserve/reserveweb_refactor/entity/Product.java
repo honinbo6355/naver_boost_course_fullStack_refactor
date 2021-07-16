@@ -17,9 +17,7 @@ public class Product extends SystemDate {
 
     private String description;
     private String content;
-    private int displayInfoId;
-    private String placeName;
-    private String imageUrl;
+    private String event;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

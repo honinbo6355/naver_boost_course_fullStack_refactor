@@ -129,7 +129,7 @@
 			var promotionCnt = response.items.length;
 
 			$.each(response.items, function(index, item) {
-				var resultProductImageUrl = "/resources/" + item.productImageUrl;
+				var resultProductImageUrl = item.productImageUrl;
 				$('#promotionItemTmpl').tmpl({resultProductImageUrl}).appendTo(promotionUl);
 			});
 

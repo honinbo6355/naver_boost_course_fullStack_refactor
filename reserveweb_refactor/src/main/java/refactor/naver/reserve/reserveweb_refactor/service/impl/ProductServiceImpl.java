@@ -1,6 +1,7 @@
 package refactor.naver.reserve.reserveweb_refactor.service.impl;
 
 import org.springframework.stereotype.Service;
+import refactor.naver.reserve.reserveweb_refactor.dto.DisplayInfoResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.dto.MoreViewRequestDto;
 import refactor.naver.reserve.reserveweb_refactor.dto.ProductResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.repository.CustomQuerydslRepository;
@@ -22,5 +23,10 @@ public class ProductServiceImpl implements ProductService {
         productResponseDto.setTotalCount(customQuerydslRepository.findProductCount(categoryId));
 
         return productResponseDto;
+    }
+
+    @Override
+    public DisplayInfoResponseDto getProductDetail(int displayInfoId) {
+        return null;
     }
 }

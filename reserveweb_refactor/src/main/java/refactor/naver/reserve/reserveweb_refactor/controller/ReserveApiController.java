@@ -2,14 +2,8 @@ package refactor.naver.reserve.reserveweb_refactor.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import refactor.naver.reserve.reserveweb_refactor.dto.CategoryResponseDto;
-import refactor.naver.reserve.reserveweb_refactor.dto.MoreViewRequestDto;
-import refactor.naver.reserve.reserveweb_refactor.dto.ProductResponseDto;
-import refactor.naver.reserve.reserveweb_refactor.dto.PromotionResponseDto;
+import org.springframework.web.bind.annotation.*;
+import refactor.naver.reserve.reserveweb_refactor.dto.*;
 import refactor.naver.reserve.reserveweb_refactor.service.CategoryService;
 import refactor.naver.reserve.reserveweb_refactor.service.ProductService;
 import refactor.naver.reserve.reserveweb_refactor.service.PromotionService;
@@ -64,6 +58,19 @@ public class ReserveApiController {
         } catch (Exception e) {
             e.printStackTrace();
             response = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return response;
+    }
+
+    @GetMapping("products/{displayInfoId}")
+    public ResponseEntity<DisplayInfoResponseDto> getProductsDetail(@PathVariable("displayInfoId") int displayInfoId) {
+        ResponseEntity<DisplayInfoResponseDto> response = null;
+        try {
+            response = new ResponseEntity<>(productService.getProductDetail(displayInfoId), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         return response;

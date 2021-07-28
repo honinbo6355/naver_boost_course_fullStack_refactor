@@ -5,10 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 import refactor.naver.reserve.reserveweb_refactor.entity.SystemDate;
 
+import javax.persistence.Embedded;
+
 @Getter
 @Setter
 @ToString
-public class DisplayInfoDto extends SystemDate {
+public class DisplayInfoDto {
     private int categoryId;
     private String categoryName;
     private int displayInfoId;
@@ -23,4 +25,6 @@ public class DisplayInfoDto extends SystemDate {
     private String productEvent;
     private int productId;
     private String telephone;
+    private String createDate;
+    private String modifyDate;
 }

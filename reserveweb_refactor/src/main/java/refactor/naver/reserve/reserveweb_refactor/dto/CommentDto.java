@@ -5,10 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 import refactor.naver.reserve.reserveweb_refactor.entity.SystemDate;
 
+import javax.persistence.Embedded;
+
 @Getter
 @Setter
 @ToString
-public class CommentDto extends SystemDate {
+public class CommentDto {
     private String comment;
     private int commentId;
     private CommentImageDto commentImages;
@@ -19,4 +21,7 @@ public class CommentDto extends SystemDate {
     private String reservationName;
     private String reservationTelephone;
     private double score;
+
+    @Embedded
+    private SystemDate systemDate;
 }

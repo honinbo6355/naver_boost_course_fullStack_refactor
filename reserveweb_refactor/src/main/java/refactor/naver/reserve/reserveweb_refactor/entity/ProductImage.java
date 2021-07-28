@@ -13,6 +13,7 @@ public class ProductImage {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(name = "type")
     private String type;
 
     @ManyToOne(fetch = FetchType.LAZY)

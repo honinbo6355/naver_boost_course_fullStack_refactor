@@ -2,6 +2,7 @@ package refactor.naver.reserve.reserveweb_refactor.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -9,21 +10,32 @@ import javax.persistence.*;
 @Table(name = "display_info")
 @Getter
 @Setter
-public class DisplayInfo extends SystemDate {
+@ToString
+public class DisplayInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String email;
-    private String homepage;
+    @Column(name = "opening_hours")
     private String openingHours;
-    private String placeLot;
+
+    @Column(name = "place_name")
     private String placeName;
+
+    @Column(name = "place_lot")
+    private String placeLot;
+
+    @Column(name = "place_street")
     private String placeStreet;
-    private String productContent;
-    private String productDescription;
-    private String productEvent;
+
+    @Column(name = "tel")
     private String telephone;
+
+    private String homepage;
+    private String email;
+
+    @Embedded
+    private SystemDate systemDate;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

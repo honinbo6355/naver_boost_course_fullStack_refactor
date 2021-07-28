@@ -5,10 +5,12 @@ import lombok.Setter;
 import lombok.ToString;
 import refactor.naver.reserve.reserveweb_refactor.entity.SystemDate;
 
+import javax.persistence.Embedded;
+
 @Getter
 @Setter
 @ToString
-public class DisplayInfoImageDto extends SystemDate {
+public class DisplayInfoImageDto {
     private String contentType;
     private boolean deleteFlag;
     private int displayInfoId;
@@ -16,4 +18,7 @@ public class DisplayInfoImageDto extends SystemDate {
     private int fileId;
     private String fileName;
     private String saveFileName;
+
+    @Embedded
+    private SystemDate systemDate;
 }

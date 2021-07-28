@@ -2,6 +2,7 @@ package refactor.naver.reserve.reserveweb_refactor.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
@@ -10,7 +11,8 @@ import java.util.List;
 @Table(name = "product")
 @Getter
 @Setter
-public class Product extends SystemDate {
+@ToString(exclude = "displayInfoList")
+public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -18,6 +20,9 @@ public class Product extends SystemDate {
     private String description;
     private String content;
     private String event;
+
+    @Embedded
+    private SystemDate systemDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

@@ -40,4 +40,7 @@ public class DisplayInfo {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @OneToOne(mappedBy = "displayInfo", fetch = FetchType.LAZY)
+    private DisplayInfoImage displayInfoImage;
 }

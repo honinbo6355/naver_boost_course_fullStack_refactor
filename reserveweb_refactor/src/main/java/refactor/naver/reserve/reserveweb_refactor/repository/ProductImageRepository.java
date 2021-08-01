@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import refactor.naver.reserve.reserveweb_refactor.entity.ProductImage;
 
+import java.util.List;
+
 public interface ProductImageRepository extends JpaRepository<ProductImage, Integer> {
 
     @Query(value =
@@ -13,5 +15,5 @@ public interface ProductImageRepository extends JpaRepository<ProductImage, Inte
             "join fetch a.fileInfo " +
             "where a.type in ('ma', 'et') and a.product.id = :productId " +
             "order by a.type desc")
-    ProductImage findProductImages(@Param("productId") int productId);
+    List<ProductImage> findProductImages(@Param("productId") int productId);
 }

@@ -19,7 +19,6 @@ public class ProductImageDto {
     private int productImageId;
     private String saveFileName;
     private String type;
-
-    @Embedded
-    private SystemDate systemDate;
+    private String createDate;
+    private String modifyDate;
 }

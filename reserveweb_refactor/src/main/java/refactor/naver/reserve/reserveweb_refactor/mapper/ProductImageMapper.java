@@ -7,41 +7,24 @@ import refactor.naver.reserve.reserveweb_refactor.entity.ProductImage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface ProductImageMapper extends EntityMapper<ProductImageDto, ProductImage> {
 
-    default List<ProductImageDto> map(List<ProductImage> productImages) {
-        if (productImages == null) {
-            return null;
-        }
+    @Override
+    @Mapping(target = "contentType", source = "fileInfo.contentType")
+    @Mapping(target = "deleteFlag", source = "fileInfo.deleteFlag")
+    @Mapping(target = "fileInfoId", source = "fileInfo.id")
+    @Mapping(target = "fileName", source = "fileInfo.fileName")
+    @Mapping(target = "productId", source = "product.id")
+    @Mapping(target = "productImageId", source = "id")
+    @Mapping(target = "saveFileName", source = "fileInfo.saveFileName")
+    @Mapping(target = "createDate", source = "fileInfo.systemDate.createDate")
+    @Mapping(target = "modifyDate", source = "fileInfo.systemDate.modifyDate")
+    ProductImageDto toDto(ProductImage productImage);
 
-        List<ProductImageDto> list = new ArrayList<ProductImageDto>(productImages.size());
-        for (ProductImage image : productImages) {
-            list.add(productImageToProductImageDto(image));
-        }
-
-        return list;
-    }
-
-    private ProductImageDto productImageToProductImageDto(ProductImage image) {
-        if (image == null) {
-            return null;
-        }
-
-        ProductImageDto dto = new ProductImageDto();
-
-        dto.setContentType(image.getFileInfo().getContentType());
-        dto.setDeleteFlag(image.getFileInfo().isDeleteFlag());
-        dto.setFileInfoId(image.getFileInfo().getId());
-        dto.setFileName(image.getFileInfo().getFileName());
-        dto.setProductId(image.getProduct().getId());
-        dto.setProductImageId(image.getId());
-        dto.setSaveFileName(image.getFileInfo().getSaveFileName());
-        dto.setType(image.getType());
-        dto.setCreateDate(image.getFileInfo().getSystemDate().getCreateDate());
-        dto.setModifyDate(image.getFileInfo().getSystemDate().getModifyDate());
-
-        return dto;
+    default List<ProductImageDto> toDto(List<ProductImage> productImages) {
+        return productImages.stream().map(this::toDto).collect(Collectors.toList());
     }
 }

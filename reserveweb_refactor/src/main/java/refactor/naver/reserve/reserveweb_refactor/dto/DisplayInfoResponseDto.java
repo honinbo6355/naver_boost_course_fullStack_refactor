@@ -11,7 +11,7 @@ import java.util.List;
 @ToString
 public class DisplayInfoResponseDto {
     private double averageScore;
-    private CommentDto comments;
+    private List<CommentDto> comments;
     private DisplayInfoDto displayInfo;
     private DisplayInfoImageDto displayInfoImage;
     private List<ProductImageDto> productImages;

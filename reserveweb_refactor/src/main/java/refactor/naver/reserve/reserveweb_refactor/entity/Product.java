@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
@@ -36,4 +37,10 @@ public class Product {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private List<ProductImage> productImageList;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private Set<ReservationInfo> reservationInfos;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private Set<Comment> comments;
 }

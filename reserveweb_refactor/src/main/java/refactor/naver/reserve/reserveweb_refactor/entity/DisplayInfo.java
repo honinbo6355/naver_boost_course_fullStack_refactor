@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "display_info")
@@ -43,4 +44,7 @@ public class DisplayInfo {
 
     @OneToOne(mappedBy = "displayInfo", fetch = FetchType.LAZY)
     private DisplayInfoImage displayInfoImage;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "displayInfo")
+    private Set<ReservationInfo> reservationInfos;
 }

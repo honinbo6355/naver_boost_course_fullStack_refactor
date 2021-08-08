@@ -21,7 +21,6 @@ public class CommentDto {
     private String reservationName;
     private String reservationTelephone;
     private double score;
-
-    @Embedded
-    private SystemDate systemDate;
+    private String createDate;
+    private String modifyDate;
 }

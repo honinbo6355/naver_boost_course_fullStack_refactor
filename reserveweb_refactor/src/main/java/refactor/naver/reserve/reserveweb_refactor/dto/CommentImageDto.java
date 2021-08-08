@@ -1,9 +1,15 @@
 package refactor.naver.reserve.reserveweb_refactor.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import refactor.naver.reserve.reserveweb_refactor.entity.SystemDate;
 
 import javax.persistence.Embedded;
 
+@Getter
+@Setter
+@ToString
 public class CommentImageDto {
     private String contentType;
     private boolean deleteFlag;
@@ -13,7 +19,6 @@ public class CommentImageDto {
     private int reservationInfoId;
     private int reservationUserCommentId;
     private String saveFileName;
-
-    @Embedded
-    private SystemDate systemDate;
+    private String createDate;
+    private String modifyDate;
 }

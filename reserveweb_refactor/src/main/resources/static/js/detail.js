@@ -100,7 +100,7 @@
         },
         render : function() {
             this.$productIntro.html(common.displayInfoObj.productContent);
-            this.$locationMapImg.attr("src", "/resources/" + displayInfoImage.saveFileName);
+            this.$locationMapImg.attr("src", "/" + displayInfoImage.saveFileName);
             this.$placeStreet.html(common.displayInfoObj.placeStreet);
             this.$placeLot.html(common.displayInfoObj.placeLot);
             this.$placeName.html(common.displayInfoObj.placeName);

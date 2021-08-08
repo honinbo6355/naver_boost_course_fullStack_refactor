@@ -2,10 +2,7 @@ package refactor.naver.reserve.reserveweb_refactor.service.impl;
 
 import org.springframework.stereotype.Service;
 import refactor.naver.reserve.reserveweb_refactor.dto.*;
-import refactor.naver.reserve.reserveweb_refactor.entity.Comment;
-import refactor.naver.reserve.reserveweb_refactor.entity.DisplayInfo;
-import refactor.naver.reserve.reserveweb_refactor.entity.DisplayInfoImage;
-import refactor.naver.reserve.reserveweb_refactor.entity.ProductImage;
+import refactor.naver.reserve.reserveweb_refactor.entity.*;
 import refactor.naver.reserve.reserveweb_refactor.mapper.CommentMapper;
 import refactor.naver.reserve.reserveweb_refactor.mapper.DisplayInfoImageMapper;
 import refactor.naver.reserve.reserveweb_refactor.mapper.DisplayInfoMapper;
@@ -14,6 +11,7 @@ import refactor.naver.reserve.reserveweb_refactor.repository.*;
 import refactor.naver.reserve.reserveweb_refactor.service.ProductService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -64,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
         int productId = displayInfoDto.getProductId();
         List<ProductImageDto> productImageDto = productImageMapper.toDto(productImageRepository.findProductImages(productId));
         DisplayInfoImageDto displayInfoImageDto = displayInfoImageMapper.toDto(displayInfoImageRepository.findDisplayInfoImage(displayInfoId));
-        List<CommentDto> comments = commentMapper.toDto(commentRepository.findComments(productId));
+        List<CommentDto> comments = commentMapper.toDto(commentRepository.findComments(productId).stream().map(this::validComment).collect(Collectors.toList()));
         Double averageScore = commentRepository.findAverageScore(productId);
 
         displayInfoResponseDto.setDisplayInfo(displayInfoDto);
@@ -74,5 +72,13 @@ public class ProductServiceImpl implements ProductService {
         displayInfoResponseDto.setAverageScore(averageScore);
 
         return displayInfoResponseDto;
+    }
+
+    private Comment validComment(Comment comment) {
+        if (comment.getCommentImage() == null) {
+            comment.setCommentImage(new CommentImage());
+        }
+
+        return comment;
     }
 }

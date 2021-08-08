@@ -33,30 +33,4 @@ public interface CommentMapper extends EntityMapper<CommentDto, Comment> {
     default List<CommentDto> toDto(List<Comment> comment) {
         return comment.stream().map(this::toDto).collect(Collectors.toList());
     }
-
-//    default List<CommentDto> map(List<Comment> comments) {
-//        if (comments == null) {
-//            return null;
-//        }
-//
-//        List<CommentDto> list = new ArrayList<>(comments.size());
-//        for (Comment comment : comments) {
-//            list.add(commentToCommentDto(comment));
-//        }
-//
-//        return list;
-//    }
-//
-//    private CommentDto commentToCommentDto(Comment comment) {
-//        if (comment == null) {
-//            return null;
-//        }
-//
-//        CommentDto dto = new CommentDto();
-//
-//        dto.setComment(comment.getComment());
-//        dto.setCommentId(comment.getId());
-//
-//        dto.setCommentImages(comment.getCommentImage());
-//    }
 }

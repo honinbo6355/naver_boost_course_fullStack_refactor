@@ -56,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public DisplayInfoResponseDto getProductDetail(int displayInfoId) {
+    public DisplayInfoResponseDto getProductDetail(int displayInfoId) throws Exception {
         DisplayInfoResponseDto displayInfoResponseDto = new DisplayInfoResponseDto();
         DisplayInfoDto displayInfoDto = displayInfoMapper.toDto(displayInfoRepository.findDisplayInfo(displayInfoId));
         int productId = displayInfoDto.getProductId();

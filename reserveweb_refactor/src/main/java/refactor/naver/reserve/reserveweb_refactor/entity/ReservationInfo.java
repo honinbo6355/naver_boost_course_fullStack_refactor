@@ -24,6 +24,9 @@ public class ReservationInfo {
     @JoinColumn(name = "display_info_id")
     private DisplayInfo displayInfo;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservationInfo")
+    private Set<ReservationInfoPrice> reservationInfoPrices;
+
     @Column(name = "reservation_name")
     private String reservationName;
 

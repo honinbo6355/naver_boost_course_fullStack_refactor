@@ -7,19 +7,22 @@ import refactor.naver.reserve.reserveweb_refactor.dto.*;
 import refactor.naver.reserve.reserveweb_refactor.service.CategoryService;
 import refactor.naver.reserve.reserveweb_refactor.service.ProductService;
 import refactor.naver.reserve.reserveweb_refactor.service.PromotionService;
+import refactor.naver.reserve.reserveweb_refactor.service.ReservationService;
 
 @RestController
 @RequestMapping(path = "/api")
 public class ReserveApiController {
 
-    private CategoryService categoryService;
-    private PromotionService promotionService;
-    private ProductService productService;
+    private final CategoryService categoryService;
+    private final PromotionService promotionService;
+    private final ProductService productService;
+    private final ReservationService reservationService;
 
-    public ReserveApiController(CategoryService categoryService, PromotionService promotionService, ProductService productService) {
+    public ReserveApiController(CategoryService categoryService, PromotionService promotionService, ProductService productService, ReservationService reservationService) {
         this.categoryService = categoryService;
         this.promotionService = promotionService;
         this.productService = productService;
+        this.reservationService = reservationService;
     }
 
     @GetMapping("categories")
@@ -68,6 +71,19 @@ public class ReserveApiController {
         ResponseEntity<DisplayInfoResponseDto> response = null;
         try {
             response = new ResponseEntity<>(productService.getProductDetail(displayInfoId), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return response;
+    }
+
+    @GetMapping("reserve/{displayInfoId}")
+    public ResponseEntity<ReservationResponseDto> getReservePageInfo(@PathVariable("displayInfoId") int displayInfoId) {
+        ResponseEntity<ReservationResponseDto> response = null;
+        try {
+            response = new ResponseEntity<>(reservationService.getReservePageInfo(displayInfoId), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

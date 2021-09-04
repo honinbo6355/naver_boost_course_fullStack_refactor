@@ -7,5 +7,5 @@ import refactor.naver.reserve.reserveweb_refactor.dto.ProductResponseDto;
 public interface ProductService {
     ProductResponseDto getProduct(int categoryId, MoreViewRequestDto moreViewRequestDto) throws Exception;
 
-    DisplayInfoResponseDto getProductDetail(int displayInfoId);
+    DisplayInfoResponseDto getProductDetail(int displayInfoId) throws Exception;
 }

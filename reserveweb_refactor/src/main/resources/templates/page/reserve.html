@@ -3,7 +3,7 @@
         lang="ko"
         xmlns:th="http://www.thymeleaf.org"
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorator="../layout/default_layout">
+        layout:decorator="layout/default_layout">
 
     <th:block layout:fragment="css">
         <style>
@@ -152,6 +152,6 @@
             </div>
         </script>
 
-        <script type="text/javascript" th:src="@{/resources/js/reserve.js}"></script>
+        <script type="text/javascript" th:src="@{/js/reserve.js}"></script>
     </th:block>
 </html>

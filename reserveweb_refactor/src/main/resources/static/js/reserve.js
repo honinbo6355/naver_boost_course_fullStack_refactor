@@ -32,13 +32,33 @@
             reserveFormView.init();
         },
 
+        // getReservePageInfo : function() {
+        //     $.ajax({
+        //         url : "/api/reserve/" + displayInfoId,
+        //         type : "GET",
+        //         dataType : "json",
+        //         async : false,
+        //         headers : {"Authorization" : localStorage.getItem("token")}
+        //     }).done(function(response, textStatus, jqXHR) {
+        //         console.log("response : " + response);
+        //         common.productImageObj.productImages = response.productImages;
+        //         common.displayInfoObj = response.displayInfo;
+        //
+        //         payload.productId = response.displayInfo.productId;
+        //         payload.reservationYearMonthDay = response.reservationDate;
+        //         prices = response.prices;
+        //     }).fail(function(jqXHR, textStatus, errorThrown) {
+        //         console.log("textStatus : " + textStatus);
+        //         window.location.href = "/mainpage";
+        //     });
+        // }
+
         getReservePageInfo : function() {
             $.ajax({
                 url : "/api/reserve/" + displayInfoId,
                 type : "GET",
                 dataType : "json",
-                async : false,
-                headers : {"Authorization" : localStorage.getItem("token")}
+                async : false
             }).done(function(response, textStatus, jqXHR) {
                 console.log("response : " + response);
                 common.productImageObj.productImages = response.productImages;

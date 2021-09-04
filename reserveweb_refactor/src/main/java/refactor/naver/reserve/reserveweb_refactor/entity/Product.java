@@ -43,4 +43,7 @@ public class Product {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private Set<Comment> comments;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    private Set<ProductPrice> productPrices;
 }

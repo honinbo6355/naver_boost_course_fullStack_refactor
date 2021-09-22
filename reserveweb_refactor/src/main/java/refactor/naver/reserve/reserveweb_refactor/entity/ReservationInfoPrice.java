@@ -19,4 +19,6 @@ public class ReservationInfoPrice {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "product_price_id")
     private ProductPrice productPrice;
+
+    private int count;
 }

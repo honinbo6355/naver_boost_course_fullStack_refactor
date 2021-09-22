@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import java.time.LocalDateTime;
 
 @Embeddable
 @Getter

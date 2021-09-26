@@ -1,9 +1,17 @@
 package refactor.naver.reserve.reserveweb_refactor.controller;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import refactor.naver.reserve.reserveweb_refactor.dto.*;
+import refactor.naver.reserve.reserveweb_refactor.entity.User;
+import refactor.naver.reserve.reserveweb_refactor.jwt.JwtFilter;
+import refactor.naver.reserve.reserveweb_refactor.jwt.TokenProvider;
 import refactor.naver.reserve.reserveweb_refactor.service.CategoryService;
 import refactor.naver.reserve.reserveweb_refactor.service.ProductService;
 import refactor.naver.reserve.reserveweb_refactor.service.PromotionService;
@@ -17,12 +25,17 @@ public class ReserveApiController {
     private final PromotionService promotionService;
     private final ProductService productService;
     private final ReservationService reservationService;
+    private final TokenProvider tokenProvider;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public ReserveApiController(CategoryService categoryService, PromotionService promotionService, ProductService productService, ReservationService reservationService) {
+    public ReserveApiController(CategoryService categoryService, PromotionService promotionService, ProductService productService, ReservationService reservationService,
+                                TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.categoryService = categoryService;
         this.promotionService = promotionService;
         this.productService = productService;
         this.reservationService = reservationService;
+        this.tokenProvider = tokenProvider;
+        this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
 
     @GetMapping("categories")
@@ -104,5 +117,28 @@ public class ReserveApiController {
         }
 
         return response;
+    }
+
+    @PostMapping("signup")
+    public ResponseEntity<String> signup() {
+        return null;
+    }
+
+    @PostMapping("doLogin")
+    public ResponseEntity<String> doLogin(@RequestBody User user) {
+        UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
+
+        // authenticate 메소드가 실행될때 CustomUserDetailsServiceImpl => loadUserByUsername 메소드가 내부적으로 실행된다.
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = tokenProvider.createToken(authentication);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
+
+        return new ResponseEntity(HttpStatus.OK, httpHeaders, HttpStatus.OK);
     }
 }

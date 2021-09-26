@@ -28,4 +28,12 @@ public class ViewController {
 
         return mav;
     }
+
+    @GetMapping("login")
+    public ModelAndView login() {
+        ModelAndView mav = new ModelAndView("page/login");
+        mav.addObject("loginPage", true);
+
+        return mav;
+    }
 }

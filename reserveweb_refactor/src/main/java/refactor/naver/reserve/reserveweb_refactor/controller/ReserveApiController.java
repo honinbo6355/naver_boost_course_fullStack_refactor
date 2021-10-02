@@ -12,10 +12,7 @@ import refactor.naver.reserve.reserveweb_refactor.dto.*;
 import refactor.naver.reserve.reserveweb_refactor.entity.User;
 import refactor.naver.reserve.reserveweb_refactor.jwt.JwtFilter;
 import refactor.naver.reserve.reserveweb_refactor.jwt.TokenProvider;
-import refactor.naver.reserve.reserveweb_refactor.service.CategoryService;
-import refactor.naver.reserve.reserveweb_refactor.service.ProductService;
-import refactor.naver.reserve.reserveweb_refactor.service.PromotionService;
-import refactor.naver.reserve.reserveweb_refactor.service.ReservationService;
+import refactor.naver.reserve.reserveweb_refactor.service.*;
 
 @RestController
 @RequestMapping(path = "/api")
@@ -25,15 +22,17 @@ public class ReserveApiController {
     private final PromotionService promotionService;
     private final ProductService productService;
     private final ReservationService reservationService;
+    private final UserService userService;
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
 
-    public ReserveApiController(CategoryService categoryService, PromotionService promotionService, ProductService productService, ReservationService reservationService,
+    public ReserveApiController(CategoryService categoryService, PromotionService promotionService, ProductService productService, ReservationService reservationService, UserService userService,
                                 TokenProvider tokenProvider, AuthenticationManagerBuilder authenticationManagerBuilder) {
         this.categoryService = categoryService;
         this.promotionService = promotionService;
         this.productService = productService;
         this.reservationService = reservationService;
+        this.userService = userService;
         this.tokenProvider = tokenProvider;
         this.authenticationManagerBuilder = authenticationManagerBuilder;
     }
@@ -120,8 +119,17 @@ public class ReserveApiController {
     }
 
     @PostMapping("signup")
-    public ResponseEntity<String> signup() {
-        return null;
+    public ResponseEntity<String> signup(@RequestBody User user) {
+        ResponseEntity<String> response = null;
+        try {
+            userService.signup(user);
+            response = new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return response;
     }
 
     @PostMapping("doLogin")
@@ -139,6 +147,6 @@ public class ReserveApiController {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
-        return new ResponseEntity(HttpStatus.OK, httpHeaders, HttpStatus.OK);
+        return new ResponseEntity(httpHeaders, HttpStatus.OK);
     }
 }

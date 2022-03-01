@@ -15,5 +15,4 @@
 
 - 참고
   - MyBatis를 활용한 레거시 프로젝트 저장소 : https://github.com/honinbo6355/naver_boost_course
-  - JPA로 재구성한 프로젝트 저장소 : https://github.com/honinbo6355/naver_boost_course_refactor
   - 배포 URL : http://ec2-3-37-7-111.ap-northeast-2.compute.amazonaws.com:8083/mainpage

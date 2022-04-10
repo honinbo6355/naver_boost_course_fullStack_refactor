@@ -25,14 +25,14 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findOneWithAuthoritiesByEmail(email)
+        return userRepository.findOneWithUserAuthoritiesByEmail(email)
                 .map(user -> createUser(user))
                 .orElseThrow(() -> new UsernameNotFoundException(email + "은 존재하지 않습니다."));
     }
 
     private org.springframework.security.core.userdetails.User createUser(User user) {
-        List<GrantedAuthority> grantedAuthorities = user.getAuthorities().stream()
-                .map(authority -> new SimpleGrantedAuthority(authority.getAuthorityName()))
+        List<GrantedAuthority> grantedAuthorities = user.getUserAuthorities().stream()
+                .map(userAuthority -> new SimpleGrantedAuthority(userAuthority.getAuthority().getAuthorityName()))
                 .collect(Collectors.toList());
 
         return new org.springframework.security.core.userdetails.User(user.getEmail(),

@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import refactor.naver.reserve.reserveweb_refactor.dto.UserResponseDto;
 
 import java.security.Key;
 import java.util.Arrays;
@@ -26,17 +27,14 @@ public class TokenProvider implements InitializingBean {
     private final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
 
     private static final String AUTHORITIES_KEY = "auth";
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 30 * 60 * 1000L; // 30분
+    private static final long REFRESH_TOKEN_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000L; // 7일
 
     private final String secret;
-    private final long tokenValidityInMilliseconds;
-
     private Key key;
 
-    public TokenProvider(
-            @Value("${jwt.secret}") String secret,
-            @Value("${jwt.token-validity-in-seconds}") long tokenValidityInSeconds) {
+    public TokenProvider(@Value("${jwt.secret}") String secret) {
         this.secret = secret;
-        this.tokenValidityInMilliseconds = tokenValidityInSeconds * 1000;
     }
 
     @Override
@@ -46,20 +44,36 @@ public class TokenProvider implements InitializingBean {
     }
 
     // 로그인 성공하면 jwt token을 생성한다. 이 token을 기준으로 request 검증을 한다.
-    public String createToken(Authentication authentication) {
+    public UserResponseDto createToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         long now = (new Date()).getTime();
-        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+        Date accessTokenValidity = new Date(now + this.ACCESS_TOKEN_EXPIRE_TIME);
+        Date refreshTokenValidity = new Date(now + this.REFRESH_TOKEN_EXPIRE_TIME);
 
-        return Jwts.builder()
+        String accessToken = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim(AUTHORITIES_KEY, authorities)
                 .signWith(key, SignatureAlgorithm.HS512)
-                .setExpiration(validity)
+                .setExpiration(accessTokenValidity)
                 .compact();
+
+        String refreshToken = Jwts.builder() // 리프레시 토큰은 Subject, Claim와 같은 회원정보를 담지않음
+                .signWith(key, SignatureAlgorithm.HS512)
+                .setExpiration(refreshTokenValidity)
+                .compact();
+
+        return UserResponseDto
+                .builder()
+                .email(authentication.getName())
+                .grantType("Bearer")
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .accessTokenValidityTime(accessTokenValidity.getTime())
+                .refreshTokenValidityTime(refreshTokenValidity.getTime())
+                .build();
     }
 
     public Authentication getAuthentication(String token) {

@@ -18,7 +18,7 @@ public class SecurityUtil {
     private SecurityUtil() {
 
     }
-    
+
     public static Optional<String> getCurrentUsername() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // JwtFilter의 doFilter 메소드에서 저장한 객체
 

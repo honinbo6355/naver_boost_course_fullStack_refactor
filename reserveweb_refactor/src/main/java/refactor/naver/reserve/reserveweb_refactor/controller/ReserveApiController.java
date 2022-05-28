@@ -123,7 +123,6 @@ public class ReserveApiController {
         return response;
     }
 
-    // TODO: dto 분리
     @PostMapping("signup")
     public ResponseEntity<String> signup(@RequestBody UserRequestDto.Signup signup) {
         ResponseEntity<String> response = null;
@@ -139,7 +138,7 @@ public class ReserveApiController {
     }
 
     @PostMapping("doLogin")
-    public ResponseEntity<UserResponseDto> doLogin(@RequestBody UserRequestDto.Login login) {
+    public ResponseEntity<UserResponseDto> doLogin(@RequestBody UserRequestDto.Login login) throws Exception {
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(login.getEmail(), login.getPassword());
 
@@ -149,6 +148,10 @@ public class ReserveApiController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         UserResponseDto userResponseDto = tokenProvider.createToken(authentication);
+        User user = userService.getUser(login.getEmail(), login.getPassword());
+
+        userResponseDto.setUserId(user.getUserId());
+        userResponseDto.setEmail(user.getEmail());
 
         redisTemplate.opsForValue()
                 .set("RT:" + authentication.getName(), userResponseDto.getRefreshToken(), userResponseDto.getRefreshTokenValidityTime(), TimeUnit.MILLISECONDS);
@@ -185,8 +188,9 @@ public class ReserveApiController {
         return new ResponseEntity<>(userResponseDto, HttpStatus.OK);
     }
 
-    @PostMapping("logout")
-    public ResponseEntity<Void> logout() {
+    @PostMapping("doLogout")
+    public ResponseEntity<Void> doLogout() {
+        System.out.println("doLogout 메소드 실행");
         return null;
     }
 }

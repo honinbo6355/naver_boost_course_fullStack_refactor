@@ -6,6 +6,7 @@ import lombok.*;
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserResponseDto {
+    private Long userId;
     private String email;
     private String grantType;
     private String accessToken;
@@ -14,8 +15,7 @@ public class UserResponseDto {
     private Long refreshTokenValidityTime;
 
     @Builder
-    public UserResponseDto(String email, String grantType, String accessToken, String refreshToken, Long accessTokenValidityTime, Long refreshTokenValidityTime) {
-        this.email = email;
+    public UserResponseDto(String grantType, String accessToken, String refreshToken, Long accessTokenValidityTime, Long refreshTokenValidityTime) {
         this.grantType = grantType;
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;

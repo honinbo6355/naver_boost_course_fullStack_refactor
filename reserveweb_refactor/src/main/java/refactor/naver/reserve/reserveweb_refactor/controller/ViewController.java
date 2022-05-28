@@ -1,9 +1,14 @@
 package refactor.naver.reserve.reserveweb_refactor.controller;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.security.Principal;
 
 @Controller
 public class ViewController {
@@ -29,10 +34,18 @@ public class ViewController {
         return mav;
     }
 
-    @GetMapping("login")
-    public ModelAndView login() {
+    @GetMapping("loginPage")
+    public ModelAndView loginPage() {
         ModelAndView mav = new ModelAndView("page/login");
         mav.addObject("loginPage", true);
+
+        return mav;
+    }
+
+    @GetMapping("logoutPage")
+    public ModelAndView logoutPage() {
+        ModelAndView mav = new ModelAndView("page/logout");
+        mav.addObject("logoutPage", true);
 
         return mav;
     }

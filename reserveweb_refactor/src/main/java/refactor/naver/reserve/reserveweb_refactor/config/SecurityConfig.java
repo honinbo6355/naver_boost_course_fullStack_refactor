@@ -3,6 +3,7 @@ package refactor.naver.reserve.reserveweb_refactor.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -34,6 +35,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+                .antMatchers("/css/**")
+                .antMatchers("/font/**")
+                .antMatchers("/img/**")
+                .antMatchers("/img_map/**")
+                .antMatchers("/js/**");
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -49,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/reserve/**").authenticated()
+                .antMatchers("/api/reserve/**", "/api/doLogout").authenticated()
                 .anyRequest().permitAll()
 
                 .and()

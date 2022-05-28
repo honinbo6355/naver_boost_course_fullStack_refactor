@@ -67,7 +67,6 @@ public class TokenProvider implements InitializingBean {
 
         return UserResponseDto
                 .builder()
-                .email(authentication.getName())
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

@@ -38,8 +38,10 @@
                 localStorage.setItem("accessToken", response.grantType + " " + response.accessToken);
                 localStorage.setItem("refreshToken", response.grantType + " " + response.refreshToken);
                 localStorage.setItem("email", response.email);
+                localStorage.setItem("userId", response.userId);
 
                 window.location.href = "/mainpage";
+
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("textStatus : " + textStatus);
             });

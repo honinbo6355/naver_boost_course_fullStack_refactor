@@ -47,4 +47,20 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(newUser);
     }
+
+    @Override
+    @Transactional
+    public User getUser(String email, String password) throws Exception {
+        User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElse(null);
+
+        if (user == null) {
+            throw new RuntimeException("로그인 정보가 일치하지 않습니다.");
+        }
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new RuntimeException("로그인 정보가 일치하지 않습니다.");
+        }
+
+        return user;
+    }
 }

@@ -27,10 +27,17 @@
             $.ajax({
                 url: "/api/doLogout",
                 type: "POST",
-                headers : {"Authorization" : localStorage.getItem("accessToken")},
+                headers : {"Authorization" : localStorage.getItem("grantType") + " " + localStorage.getItem("accessToken")},
                 contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({
+                    "accessToken" : localStorage.getItem("accessToken"),
+                    "refreshToken" : localStorage.getItem("refreshToken")
+                })
             }).done(function(response, textStatus, jqXHR) {
-                debugger;
+                if (textStatus === 'success') {
+                    localStorage.clear();
+                    window.location.href = '/mainpage';
+                }
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("textStatus : " + textStatus);
             });

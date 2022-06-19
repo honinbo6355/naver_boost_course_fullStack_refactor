@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import refactor.naver.reserve.reserveweb_refactor.dto.*;
 import refactor.naver.reserve.reserveweb_refactor.entity.User;
@@ -171,12 +172,14 @@ public class ReserveApiController {
         // 3. Redis에서 User email을 기반으로 저장된 Refresh Token값을 가져옵니다.
         String refreshToken = redisTemplate.opsForValue().get("RT:" + authentication.getName()).toString();
 
+        if (!StringUtils.hasText(refreshToken)) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         // 요청 refreshToken과 redis에 저장되어 있는 refreshToken과 일치하지 않을 경우
         if (!refreshToken.equals(reIssue.getRefreshToken())) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
-
-        // TODO: 로그아웃 되었을 경우 처리 추가
 
         // 4. 새로운 토큰 생성
         UserResponseDto userResponseDto = tokenProvider.createToken(authentication);
@@ -189,8 +192,24 @@ public class ReserveApiController {
     }
 
     @PostMapping("doLogout")
-    public ResponseEntity<Void> doLogout() {
-        System.out.println("doLogout 메소드 실행");
-        return null;
+    public ResponseEntity<Void> doLogout(@RequestBody UserRequestDto.Logout logout) {
+        // 1. Access Token 검증
+        if (!tokenProvider.validateToken(logout.getAccessToken())) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        // 2. Access Token에서 User email을 가져옵니다.
+        Authentication authentication = tokenProvider.getAuthentication(logout.getAccessToken());
+
+        // 3. Redis에서 해당 User email로 저장된 Refresh Token이 있는지 확인후, 존재하면 삭제합니다.
+        if (redisTemplate.opsForValue().get("RT:" + authentication.getName()) != null) {
+            redisTemplate.delete("RT:" + authentication.getName());
+        }
+
+        // 4. 해당 Access Token 유효시간 가지고 와서 BlackList로 저장하기
+        Long expiration = tokenProvider.getExpiration(logout.getAccessToken());
+        redisTemplate.opsForValue().set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

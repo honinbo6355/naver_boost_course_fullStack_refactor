@@ -27,4 +27,11 @@ public class UserRequestDto {
         private String email;
         private String password;
     }
+
+    @Getter
+    @Setter
+    public static class Logout {
+        private String accessToken;
+        private String refreshToken;
+    }
 }

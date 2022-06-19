@@ -35,8 +35,9 @@
                 contentType: "application/json; charset=utf-8",
             }).done(function(response, textStatus, jqXHR) {
                 console.log("response : " + response);
-                localStorage.setItem("accessToken", response.grantType + " " + response.accessToken);
-                localStorage.setItem("refreshToken", response.grantType + " " + response.refreshToken);
+                localStorage.setItem("grantType", response.grantType);
+                localStorage.setItem("accessToken", response.accessToken);
+                localStorage.setItem("refreshToken", response.refreshToken);
                 localStorage.setItem("email", response.email);
                 localStorage.setItem("userId", response.userId);
 

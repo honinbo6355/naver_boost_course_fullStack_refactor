@@ -2,7 +2,7 @@
 
 네이버 부스트코스 강의 참고해 기술스택 변경으로 재구성한 클론 프로젝트
 
-- 개발 언어, 프레임워크, 라이브러리 : SpringBoot, Spring Security, MyBatis, Spring Data JPA, Thymeleaf, JWT, Querydsl, MySQL, AWS, Javascript, jQuery, Ajax
+- 개발 언어, 프레임워크, 라이브러리 : SpringBoot, Spring Security, Spring Data JPA, Thymeleaf, JWT, Querydsl, MySQL, AWS, Javascript, jQuery, Ajax
 
 - 주요 기능
   - 회원가입/로그인, 카테고리, 메인페이지, 상세페이지, 댓글, 예약하기

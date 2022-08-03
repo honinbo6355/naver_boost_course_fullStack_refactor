@@ -48,9 +48,8 @@
                 payload.reservationYearMonthDay = response.reservationDate;
                 prices = response.prices;
             }).fail(function(jqXHR, textStatus, errorThrown) {
-                debugger;
                 console.log("textStatus : " + textStatus);
-                window.location.href = "/mainpage";
+                window.location.href = "/mainpage"
             });
         }
     };

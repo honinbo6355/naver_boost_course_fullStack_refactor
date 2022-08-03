@@ -40,6 +40,8 @@
                 localStorage.setItem("refreshToken", response.refreshToken);
                 localStorage.setItem("email", response.email);
                 localStorage.setItem("userId", response.userId);
+                localStorage.setItem("accessTokenValidityTime", response.accessTokenValidityTime);
+                localStorage.setItem("refreshTokenValidityTime", response.refreshTokenValidityTime);
 
                 window.location.href = "/mainpage";
 

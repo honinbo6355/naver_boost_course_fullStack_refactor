@@ -6,9 +6,9 @@ const common = (function() {
             slideWidth : 414,
             slideSpeed : 300
         },
-    
+
         displayInfoObj : {},
-    
+
         productImageView : {
             init : function() {
                 this.cacheDom();
@@ -31,14 +31,14 @@ const common = (function() {
                     const resultItem = $.extend(true, {}, item, {"title" : common.displayInfoObj.productDescription});
                     $("#productImageItemTmpl").tmpl(resultItem).appendTo(this.$ul);
                 }.bind(this));
-        
+
                 if (common.productImageObj.productImages.length > 1) {
                     let $firstNodeClone = this.$ul.children().first().clone();
                     let $lastNodeClone = this.$ul.children().last().clone();
-        
+
                     this.$ul.prepend($lastNodeClone); // 맨 앞에 복사한 마지막 노드 붙이기
                     this.$ul.append($firstNodeClone); // 맨 뒤에 복사한 첫번째 노드 붙이기
-        
+
                     this.$ul.css("transform", "translate3d(-" + common.productImageObj.slideWidth * (common.productImageObj.curImgIdx+1) + "px, 0px, 0px)"); // 최초에는 translate3d(-414px, 0px, 0px)
                     this.$prevNav.show();
                     this.$nextNav.show();
@@ -76,7 +76,7 @@ const common = (function() {
                 this.$currentPage.text(common.productImageObj.curImgIdx+1);
             }
         },
-    
+
         displayInfoView : {
             init : function() {
                 this.cacheDom();
@@ -106,9 +106,35 @@ const common = (function() {
                 this.$dscOpenBtn.show();
                 this.$productDscContainer.addClass("close3");
             }
+        },
+
+        reIssueToken : function() {
+            $.ajax({
+                url : "/api/reIssue",
+                type : "POST",
+                dataType : "json",
+                async : false,
+                contentType: "application/json; charset=utf-8",
+                data : JSON.stringify({
+                    "accessToken" : localStorage.getItem("accessToken"),
+                    "refreshToken" : localStorage.getItem("refreshToken")
+                })
+            }).done(function(response, textStatus, jqXHR) {
+                console.log("response : ", response);
+
+                localStorage.setItem("grantType", response.grantType);
+                localStorage.setItem("accessToken", response.accessToken);
+                localStorage.setItem("refreshToken", response.refreshToken);
+                localStorage.setItem("accessTokenValidityTime", response.accessTokenValidityTime);
+                localStorage.setItem("refreshTokenValidityTime", response.refreshTokenValidityTime);
+            }).fail(function(jqXHR, textStatus, errorThrown) {
+                console.log("jqXHR : ", jqXHR);
+            });
         }
     }
 })();
+
+const DAY_OF_MILL_SECOND = 24 * 60 * 60 * 1000;
 
 function getDateCommaStr_yyyymmdd(dateStr) {
     var date = new Date(dateStr);
@@ -118,3 +144,18 @@ function getDateCommaStr_yyyymmdd(dateStr) {
 
     return yyyy + "." + mm + "." + dd;
 }
+
+function checkExpireToken() {
+    var accessTokenValidityTime = localStorage.getItem("accessTokenValidityTime");
+    var now = Date.now();
+
+    if (now >= accessTokenValidityTime) {
+        alert("다시 로그인해주세요.");
+        localStorage.clear();
+        window.location.href = "/mainpage";
+    } else if (now + DAY_OF_MILL_SECOND >= Number(accessTokenValidityTime)) {
+        common.reIssueToken();
+    }
+}
+
+setInterval(checkExpireToken, DAY_OF_MILL_SECOND);

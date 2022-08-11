@@ -33,12 +33,14 @@
         },
 
         getReservePageInfo : function() {
+            debugger;
+
             $.ajax({
                 url : "/api/reserve/" + displayInfoId,
                 type : "GET",
                 dataType : "json",
                 async : false,
-                headers : {"Authorization" : localStorage.getItem("accessToken")}
+                headers : {"Authorization" : localStorage.getItem("grantType") + " " + localStorage.getItem("accessToken")}
             }).done(function(response, textStatus, jqXHR) {
                 console.log("response : " + response);
                 common.productImageObj.productImages = response.productImages;
@@ -205,7 +207,7 @@
                 type: "POST",
                 data: JSON.stringify(payload),
                 contentType: "application/json; charset=utf-8",
-                headers : {"Authorization" : localStorage.getItem("accessToken")}
+                headers : {"Authorization" : localStorage.getItem("grantType") + " " + localStorage.getItem("accessToken")}
             }).done(function(response, textStatus, jqXHR) {
                 console.log("response : " + response);
                 window.location.href = "/mainpage";

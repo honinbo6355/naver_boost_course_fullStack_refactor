@@ -14,6 +14,7 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Objects;
 
 public class JwtFilter extends GenericFilterBean {
     private static final Logger logger = LoggerFactory.getLogger(JwtFilter.class);
@@ -36,8 +37,9 @@ public class JwtFilter extends GenericFilterBean {
 
         // 유효성 검증을 하고 정상 토큰이면 SecurityContext에 저장
         if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-            String isLogout = String.valueOf(redisTemplate.opsForValue().get(jwt));
-            if (!StringUtils.hasText(isLogout)) {
+            Object isLogout = redisTemplate.opsForValue().get(jwt);
+
+            if (Objects.isNull(isLogout)) {
                 Authentication authentication = tokenProvider.getAuthentication(jwt);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 logger.debug("Security Context에 '{}' 인증 정보를 저장했습니다, uri: {}", authentication.getName(), requestURI);

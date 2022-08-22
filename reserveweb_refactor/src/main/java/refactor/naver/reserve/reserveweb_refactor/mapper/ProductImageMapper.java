@@ -20,8 +20,8 @@ public interface ProductImageMapper extends EntityMapper<ProductImageDto, Produc
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productImageId", source = "id")
     @Mapping(target = "saveFileName", source = "fileInfo.saveFileName")
-    @Mapping(target = "createDate", source = "fileInfo.systemDate.createDate")
-    @Mapping(target = "modifyDate", source = "fileInfo.systemDate.modifyDate")
+    @Mapping(target = "createDate", source = "fileInfo.createDate")
+    @Mapping(target = "modifyDate", source = "fileInfo.modifyDate")
     ProductImageDto toDto(ProductImage productImage);
 
     default List<ProductImageDto> toDto(List<ProductImage> productImages) {

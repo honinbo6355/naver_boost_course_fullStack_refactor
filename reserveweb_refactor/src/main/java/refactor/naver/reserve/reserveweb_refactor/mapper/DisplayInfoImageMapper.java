@@ -16,7 +16,7 @@ public interface DisplayInfoImageMapper extends EntityMapper<DisplayInfoImageDto
     @Mapping(target = "fileId", source = "fileInfo.id")
     @Mapping(target = "fileName", source = "fileInfo.fileName")
     @Mapping(target = "saveFileName", source = "fileInfo.saveFileName")
-    @Mapping(target = "createDate", source = "fileInfo.systemDate.createDate")
-    @Mapping(target = "modifyDate", source = "fileInfo.systemDate.modifyDate")
+    @Mapping(target = "createDate", source = "fileInfo.createDate")
+    @Mapping(target = "modifyDate", source = "fileInfo.modifyDate")
     DisplayInfoImageDto toDto(DisplayInfoImage displayInfoImage);
 }

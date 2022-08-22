@@ -19,11 +19,12 @@
             <!---->
             <div >
               <form name="confirm_form" class="ng-pristine ng-valid">
-                <h2 class="login_header_sub border_bottom"> <span translate="CM-NON_MEMBER_BK_CONFIRMATION">로그아웃</span> </h2>
+                <h2 class="login_header_sub border_bottom"> <span translate="CM-NON_MEMBER_BK_CONFIRMATION">마이 페이지</span> </h2>
                 <div class="login_form">
                   <input type="text" class="login_input ng-pristine ng-untouched ng-valid ng-empty" id="email" name="email" aria-invalid="false" title="이메일" disabled>
                 </div>
                 <button type="submit" id="logoutBtn" class="login_btn confirm" > <span translate="CM-MY_BOOKING_CHECK">로그아웃 하기</span> </button> <!----> <!----> <!----> <!---->
+                <button type="submit" id="myReserveBtn" class="login_btn confirm" > <span translate="CM-MY_BOOKING_CHECK">내 예약 확인</span> </button> <!----> <!----> <!----> <!---->
               </form>
             </div>
             <!----> <!---->
@@ -83,7 +84,7 @@
   </th:block>
 
   <th:block layout:fragment="script">
-    <script type="text/javascript" th:src="@{/js/logout.js}"></script>
+    <script type="text/javascript" th:src="@{/js/mypage.js}"></script>
   </th:block>
 
 </html>

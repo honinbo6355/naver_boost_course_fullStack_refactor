@@ -6,6 +6,7 @@ import lombok.ToString;
 import refactor.naver.reserve.reserveweb_refactor.entity.SystemDate;
 
 import javax.persistence.Embedded;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -19,6 +20,6 @@ public class CommentImageDto {
     private int reservationInfoId;
     private int reservationUserCommentId;
     private String saveFileName;
-    private String createDate;
-    private String modifyDate;
+    private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
 }

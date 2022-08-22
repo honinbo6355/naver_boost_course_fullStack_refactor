@@ -130,6 +130,16 @@ const common = (function() {
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("jqXHR : ", jqXHR);
             });
+        },
+
+        drawLogin : function() {
+            if (localStorage.getItem("accessToken") == null) {
+                $("#login").show();
+                $("#mypage").hide();
+            } else {
+                $("#login").hide();
+                $("#mypage").show();
+            }
         }
     }
 })();

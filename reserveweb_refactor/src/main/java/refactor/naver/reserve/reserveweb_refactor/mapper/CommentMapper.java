@@ -26,8 +26,8 @@ public interface CommentMapper extends EntityMapper<CommentDto, Comment> {
     @Mapping(target = "reservationInfoId", source = "reservationInfo.id")
     @Mapping(target = "reservationName", source = "reservationInfo.reservationName")
     @Mapping(target = "reservationTelephone", source = "reservationInfo.reservationTel")
-    @Mapping(target = "createDate", source = "systemDate.createDate")
-    @Mapping(target = "modifyDate", source = "systemDate.modifyDate")
+    @Mapping(target = "createDate", source = "createDate")
+    @Mapping(target = "modifyDate", source = "modifyDate")
     CommentDto toDto(Comment comment);
 
     default List<CommentDto> toDto(List<Comment> comment) {

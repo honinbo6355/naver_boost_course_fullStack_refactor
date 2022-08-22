@@ -16,7 +16,7 @@ public interface DisplayInfoMapper extends EntityMapper<DisplayInfoDto, DisplayI
     @Mapping(target = "productEvent", source = "product.event")
     @Mapping(target = "categoryId", source = "product.category.id")
     @Mapping(target = "categoryName", source = "product.category.name")
-    @Mapping(target = "createDate", source = "systemDate.createDate")
-    @Mapping(target = "modifyDate", source = "systemDate.modifyDate")
+    @Mapping(target = "createDate", source = "createDate")
+    @Mapping(target = "modifyDate", source = "modifyDate")
     DisplayInfoDto toDto(DisplayInfo displayInfo);
 }

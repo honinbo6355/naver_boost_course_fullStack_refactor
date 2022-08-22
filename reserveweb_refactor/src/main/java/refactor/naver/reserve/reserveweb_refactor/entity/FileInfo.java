@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "file_info")
 @Getter
 @Setter
-public class FileInfo {
+public class FileInfo extends SystemDate {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -30,7 +30,4 @@ public class FileInfo {
 
     @OneToOne(mappedBy = "fileInfo", fetch = FetchType.LAZY)
     private DisplayInfoImage displayInfoImage;
-
-    @Embedded
-    private SystemDate systemDate;
 }

@@ -6,6 +6,7 @@ import lombok.ToString;
 import refactor.naver.reserve.reserveweb_refactor.entity.SystemDate;
 
 import javax.persistence.Embedded;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,6 +22,6 @@ public class CommentDto {
     private String reservationName;
     private String reservationTelephone;
     private double score;
-    private String createDate;
-    private String modifyDate;
+    private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
 }

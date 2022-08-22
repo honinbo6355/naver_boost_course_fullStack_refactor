@@ -17,7 +17,7 @@ public interface CommentImageMapper extends EntityMapper<CommentImageDto, Commen
     @Mapping(target = "reservationInfoId", source = "reservationInfo.id")
     @Mapping(target = "reservationUserCommentId", source = "comment.id")
     @Mapping(target = "saveFileName", source = "fileInfo.saveFileName")
-    @Mapping(target = "createDate", source = "fileInfo.systemDate.createDate")
-    @Mapping(target = "modifyDate", source = "fileInfo.systemDate.modifyDate")
+    @Mapping(target = "createDate", source = "fileInfo.createDate")
+    @Mapping(target = "modifyDate", source = "fileInfo.modifyDate")
     CommentImageDto toDto(CommentImage commentImage);
 }

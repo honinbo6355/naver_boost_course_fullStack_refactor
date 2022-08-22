@@ -6,6 +6,7 @@ import lombok.ToString;
 import refactor.naver.reserve.reserveweb_refactor.entity.SystemDate;
 
 import javax.persistence.Embedded;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -25,6 +26,6 @@ public class DisplayInfoDto {
     private String productEvent;
     private int productId;
     private String telephone;
-    private String createDate;
-    private String modifyDate;
+    private LocalDateTime createDate;
+    private LocalDateTime modifyDate;
 }

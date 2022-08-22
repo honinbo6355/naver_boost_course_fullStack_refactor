@@ -1,11 +1,11 @@
 (function() {
-    const logoutController = {
+    const myPageController = {
         init : function () {
-            logoutView.init();
+            myPageView.init();
         },
     };
 
-    const logoutView = {
+    const myPageView = {
         init : function() {
             this.cacheDom();
             this.bindEvent();
@@ -14,9 +14,15 @@
         cacheDom : function() {
             this.$email = $("#email");
             this.$logoutBtn = $("#logoutBtn");
+            this.$myReserveBtn = $("#myReserveBtn");
         },
         bindEvent : function() {
             this.$logoutBtn.on("click", this.logout);
+            this.$myReserveBtn.on("click", function(e) {
+                e.preventDefault();
+
+                window.location.href = "/myReserve";
+            })
         },
         render : function() {
             this.$email.val(localStorage.getItem("email"));
@@ -44,5 +50,5 @@
         }
     };
 
-    logoutController.init();
+    myPageController.init();
 })();

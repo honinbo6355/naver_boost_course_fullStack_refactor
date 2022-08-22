@@ -12,7 +12,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class DisplayInfo {
+public class DisplayInfo extends SystemDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -34,9 +34,6 @@ public class DisplayInfo {
 
     private String homepage;
     private String email;
-
-    @Embedded
-    private SystemDate systemDate;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

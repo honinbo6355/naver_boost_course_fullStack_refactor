@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString(exclude = "displayInfoList")
-public class Product {
+public class Product extends SystemDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,9 +21,6 @@ public class Product {
     private String description;
     private String content;
     private String event;
-
-    @Embedded
-    private SystemDate systemDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id")

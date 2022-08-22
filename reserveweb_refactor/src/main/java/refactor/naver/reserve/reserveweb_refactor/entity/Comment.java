@@ -13,7 +13,7 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class Comment {
+public class Comment extends SystemDate {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -30,7 +30,4 @@ public class Comment {
 
     private double score;
     private String comment;
-
-    @Embedded
-    private SystemDate systemDate;
 }

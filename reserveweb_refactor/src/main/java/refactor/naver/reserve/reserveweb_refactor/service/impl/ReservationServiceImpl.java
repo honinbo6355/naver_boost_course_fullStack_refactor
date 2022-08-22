@@ -3,6 +3,7 @@ package refactor.naver.reserve.reserveweb_refactor.service.impl;
 import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import refactor.naver.reserve.reserveweb_refactor.dto.ReservationInfoResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationRequestDto;
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.entity.*;
@@ -25,6 +26,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ProductPriceRepository productPriceRepository;
     private final ReservationInfoRepository reservationInfoRepository;
     private final ReservationInfoPriceRepository reservationInfoPriceRepository;
+    private final UserRepository userRepository;
     private final DisplayInfoMapper displayInfoMapper;
     private final ProductImageMapper productImageMapper;
     private final ProductPriceMapper productPriceMapper;
@@ -35,6 +37,7 @@ public class ReservationServiceImpl implements ReservationService {
                                   ProductPriceRepository productPriceRepository,
                                   ReservationInfoRepository reservationInfoRepository,
                                   ReservationInfoPriceRepository reservationInfoPriceRepository,
+                                  UserRepository userRepository,
                                   DisplayInfoMapper displayInfoMapper,
                                   ProductImageMapper productImageMapper,
                                   ProductPriceMapper productPriceMapper,
@@ -44,6 +47,7 @@ public class ReservationServiceImpl implements ReservationService {
         this.productPriceRepository = productPriceRepository;
         this.reservationInfoRepository = reservationInfoRepository;
         this.reservationInfoPriceRepository = reservationInfoPriceRepository;
+        this.userRepository = userRepository;
         this.displayInfoMapper = displayInfoMapper;
         this.productImageMapper = productImageMapper;
         this.productPriceMapper = productPriceMapper;
@@ -73,9 +77,13 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    @Transactional
-    public void createReservation(ReservationRequestDto reservationRequestDto) throws Exception {
+    @Transactional(rollbackFor = Exception.class)
+    public void createReservation(String email, ReservationRequestDto reservationRequestDto) throws Exception {
         ReservationInfo reservationInfo = reservationInfoMapper.toEntity(reservationRequestDto);
+        User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElseThrow(NullPointerException::new);
+
+        reservationInfo.setUser(user);
+        reservationInfo.setStatus(ReservationStatus.CONFIRMED);
 
         reservationInfoRepository.save(reservationInfo);
 
@@ -83,5 +91,17 @@ public class ReservationServiceImpl implements ReservationService {
             reservationInfoPrice.getReservationInfo().setId(reservationInfo.getId());
             return reservationInfoPrice;
         }).forEach(reservationInfoPriceRepository::save);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ReservationInfoResponseDto getReservationInfo(String email) {
+        User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElseThrow(NullPointerException::new);
+
+        List<ReservationInfo> reservationInfos = reservationInfoRepository.findByUserId(user.getId());
+
+        System.out.println(reservationInfos);
+
+        return null;
     }
 }

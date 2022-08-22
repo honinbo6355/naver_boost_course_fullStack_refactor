@@ -16,6 +16,7 @@ import refactor.naver.reserve.reserveweb_refactor.jwt.JwtFilter;
 import refactor.naver.reserve.reserveweb_refactor.jwt.TokenProvider;
 import refactor.naver.reserve.reserveweb_refactor.service.*;
 
+import java.security.Principal;
 import java.util.concurrent.TimeUnit;
 
 @RestController
@@ -111,10 +112,10 @@ public class ReserveApiController {
     }
 
     @PostMapping("reserve")
-    public ResponseEntity<String> createReservation(@RequestBody ReservationRequestDto reservationRequestDto) {
+    public ResponseEntity<String> createReservation(Principal principal, @RequestBody ReservationRequestDto reservationRequestDto) {
         ResponseEntity<String> response = null;
         try {
-            reservationService.createReservation(reservationRequestDto);
+            reservationService.createReservation(principal.getName(), reservationRequestDto);
             response = new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,7 +152,7 @@ public class ReserveApiController {
         UserResponseDto userResponseDto = tokenProvider.createToken(authentication);
         User user = userService.getUser(login.getEmail(), login.getPassword());
 
-        userResponseDto.setUserId(user.getUserId());
+        userResponseDto.setUserId(user.getId());
         userResponseDto.setEmail(user.getEmail());
 
         redisTemplate.opsForValue()
@@ -211,5 +212,19 @@ public class ReserveApiController {
         redisTemplate.opsForValue().set(logout.getAccessToken(), "logout", expiration, TimeUnit.MILLISECONDS);
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("reservations")
+    public ResponseEntity<ReservationInfoResponseDto> getReservationInfo(Principal principal) {
+        ReservationInfoResponseDto response;
+
+        try {
+            response = reservationService.getReservationInfo(principal.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

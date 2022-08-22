@@ -17,8 +17,8 @@ public interface ProductPriceMapper extends EntityMapper<ProductPriceDto, Produc
     @Mapping(target = "priceTypeName", source = "priceTypeName")
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "productPriceId", source = "id")
-    @Mapping(target = "createDate", source = "systemDate.createDate")
-    @Mapping(target = "modifyDate", source = "systemDate.modifyDate")
+    @Mapping(target = "createDate", source = "createDate")
+    @Mapping(target = "modifyDate", source = "modifyDate")
     ProductPriceDto toDto(ProductPrice productPrice);
 
     default List<ProductPriceDto> toDto(List<ProductPrice> productPrices) {

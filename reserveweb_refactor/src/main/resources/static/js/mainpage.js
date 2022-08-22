@@ -4,7 +4,8 @@
 		selectedCategoryId : '0',
 
 		init : function() {
-			this.drawLogin();
+			common.drawLogin();
+
 			this.getCategories();
 			this.getPromotions();
 			this.getProducts(0);
@@ -14,19 +15,8 @@
 		    $("#totalList").on("click", mainPage.selectTotalList);
 			$("#moreViewBtn").on("click", mainPage.moreView);
 			$("#mypage").on("click", function() {
-				window.location.href = "/logoutPage";
+				window.location.href = "/myPage";
 			})
-		},
-
-		drawLogin : function() {
-			if (localStorage.getItem("accessToken") == null) {
-				$("#login").show();
-				$("#mypage").hide();
-			} else {
-				$("#login").hide();
-				$("#mypage > span").text(localStorage.getItem("email"));
-				$("#mypage").show();
-			}
 		},
 
 		getProducts : function(id, viewCount) {

@@ -11,7 +11,7 @@ import java.util.Set;
 @Table(name = "reservation_info")
 @Getter
 @Setter
-public class ReservationInfo {
+public class ReservationInfo extends SystemDate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -27,6 +27,10 @@ public class ReservationInfo {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservationInfo")
     private Set<ReservationInfoPrice> reservationInfoPrices;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Column(name = "reservation_name")
     private String reservationName;
 
@@ -39,9 +43,6 @@ public class ReservationInfo {
     @Column(name = "reservation_date")
     private String reservationDate;
 
-    @Column(name = "cancel_flag")
-    private boolean cancelFlag;
-
-    @Embedded
-    private SystemDate systemDate;
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus status;
 }

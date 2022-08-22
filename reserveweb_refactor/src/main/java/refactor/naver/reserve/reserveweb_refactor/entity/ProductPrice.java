@@ -10,7 +10,7 @@ import java.util.Set;
 @Table(name = "product_price")
 @Getter
 @Setter
-public class ProductPrice {
+public class ProductPrice extends SystemDate {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -24,7 +24,4 @@ public class ProductPrice {
     private String priceTypeName;
     private int price;
     private double discountRate;
-
-    @Embedded
-    private SystemDate systemDate;
 }

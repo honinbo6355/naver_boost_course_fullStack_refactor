@@ -8,6 +8,7 @@ import lombok.ToString;
 @Setter
 @ToString
 public class ProductPriceDto {
+    private int discountedPrice;
     private double discountRate;
     private int price;
     private String priceTypeName;

@@ -22,6 +22,10 @@ public class ProductPrice extends SystemDate {
     private Set<ReservationInfoPrice> reservationInfoPrices;
 
     private String priceTypeName;
+
+    @Column(name = "original_price")
     private int price;
+
     private double discountRate;
+    private int discountedPrice;
 }

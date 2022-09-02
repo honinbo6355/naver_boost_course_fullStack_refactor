@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,8 +25,8 @@ public class ReservationInfo extends SystemDate {
     @JoinColumn(name = "display_info_id")
     private DisplayInfo displayInfo;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservationInfo")
-    private Set<ReservationInfoPrice> reservationInfoPrices;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservationInfo", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<ReservationInfoPrice> reservationInfoPrices = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -45,4 +46,14 @@ public class ReservationInfo extends SystemDate {
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
+
+    public ReservationInfo addPrice(ReservationInfoPrice price) {
+        if (price == null) {
+            throw new NullPointerException();
+        }
+
+        reservationInfoPrices.add(price);
+
+        return this;
+    }
 }

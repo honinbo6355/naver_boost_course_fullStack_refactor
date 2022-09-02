@@ -21,6 +21,6 @@ public interface ProductPriceRepository extends JpaRepository<ProductPrice, Inte
             "WHEN price_type_name = 'V' THEN 'VIP' " +
             "WHEN price_type_name = 'Y' THEN '청소년' " +
             "END AS price_type_name, " +
-            "price, discount_rate, create_date, modify_date FROM product_price WHERE product_id = :productId", nativeQuery = true)
+            "original_price, discount_rate, create_date, modify_date, discounted_price FROM product_price WHERE product_id = :productId", nativeQuery = true)
     List<ProductPrice> findProductPrice(@Param("productId") int productId);
 }

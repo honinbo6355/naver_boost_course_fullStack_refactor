@@ -1,23 +1,19 @@
 package refactor.naver.reserve.reserveweb_refactor.service.impl;
 
-import org.springframework.objenesis.SpringObjenesis;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationInfoResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationRequestDto;
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.entity.*;
-import refactor.naver.reserve.reserveweb_refactor.mapper.DisplayInfoMapper;
-import refactor.naver.reserve.reserveweb_refactor.mapper.ProductImageMapper;
-import refactor.naver.reserve.reserveweb_refactor.mapper.ProductPriceMapper;
-import refactor.naver.reserve.reserveweb_refactor.mapper.ReservationInfoMapper;
+import refactor.naver.reserve.reserveweb_refactor.mapper.*;
 import refactor.naver.reserve.reserveweb_refactor.repository.*;
 import refactor.naver.reserve.reserveweb_refactor.service.ReservationService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 public class ReservationServiceImpl implements ReservationService {
@@ -30,7 +26,8 @@ public class ReservationServiceImpl implements ReservationService {
     private final DisplayInfoMapper displayInfoMapper;
     private final ProductImageMapper productImageMapper;
     private final ProductPriceMapper productPriceMapper;
-    private final ReservationInfoMapper reservationInfoMapper;
+    private final ReservationRequestMapper reservationRequestMapper;
+    private final ReservationResponseMapper reservationResponseMapper;
 
     public ReservationServiceImpl(DisplayInfoRepository displayInfoRepository,
                                   ProductImageRepository productImageRepository,
@@ -41,7 +38,8 @@ public class ReservationServiceImpl implements ReservationService {
                                   DisplayInfoMapper displayInfoMapper,
                                   ProductImageMapper productImageMapper,
                                   ProductPriceMapper productPriceMapper,
-                                  ReservationInfoMapper reservationInfoMapper) {
+                                  ReservationRequestMapper reservationRequestMapper,
+                                  ReservationResponseMapper reservationResponseMapper) {
         this.displayInfoRepository = displayInfoRepository;
         this.productImageRepository = productImageRepository;
         this.productPriceRepository = productPriceRepository;
@@ -51,7 +49,8 @@ public class ReservationServiceImpl implements ReservationService {
         this.displayInfoMapper = displayInfoMapper;
         this.productImageMapper = productImageMapper;
         this.productPriceMapper = productPriceMapper;
-        this.reservationInfoMapper = reservationInfoMapper;
+        this.reservationRequestMapper = reservationRequestMapper;
+        this.reservationResponseMapper = reservationResponseMapper;
     }
 
     @Override
@@ -79,29 +78,41 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createReservation(String email, ReservationRequestDto reservationRequestDto) throws Exception {
-        ReservationInfo reservationInfo = reservationInfoMapper.toEntity(reservationRequestDto);
+        ReservationInfo reservationInfo = reservationRequestMapper.toEntity(reservationRequestDto);
         User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElseThrow(NullPointerException::new);
 
+        reservationRequestDto.getPrices()
+                .stream()
+                .forEach(priceDto -> {
+                    ProductPrice productPrice = productPriceRepository.findById(priceDto.getProductPriceId()).orElseThrow(NullPointerException::new);
+
+                    reservationInfo.addPrice(ReservationInfoPrice
+                            .builder()
+                            .reservationInfo(reservationInfo)
+                            .productPrice(productPrice)
+                            .count(priceDto.getCount())
+                            .build()
+                    );
+                });
         reservationInfo.setUser(user);
         reservationInfo.setStatus(ReservationStatus.CONFIRMED);
 
         reservationInfoRepository.save(reservationInfo);
-
-        reservationInfo.getReservationInfoPrices().stream().map(reservationInfoPrice -> {
-            reservationInfoPrice.getReservationInfo().setId(reservationInfo.getId());
-            return reservationInfoPrice;
-        }).forEach(reservationInfoPriceRepository::save);
     }
 
     @Override
     @Transactional(readOnly = true)
     public ReservationInfoResponseDto getReservationInfo(String email) {
         User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElseThrow(NullPointerException::new);
-
         List<ReservationInfo> reservationInfos = reservationInfoRepository.findByUserId(user.getId());
 
-        System.out.println(reservationInfos);
+        ReservationInfoResponseDto response = ReservationInfoResponseDto.builder()
+                .reservations(reservationInfos.stream()
+                        .map(reservationResponseMapper::toDto)
+                        .collect(Collectors.toList()))
+                .size(reservationInfos.size())
+                .build();
 
-        return null;
+        return response;
     }
 }

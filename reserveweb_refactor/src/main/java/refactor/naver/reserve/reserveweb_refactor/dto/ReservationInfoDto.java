@@ -12,7 +12,6 @@ public class ReservationInfoDto {
     private ReservationStatus status;
     private LocalDateTime createDate;
     private DisplayInfoDto displayInfo;
-    private Integer displayInfoId;
     private LocalDateTime modifyDate;
     private Integer productId;
     private String reservationDate;

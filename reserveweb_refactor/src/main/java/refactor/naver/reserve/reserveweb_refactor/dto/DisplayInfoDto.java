@@ -12,9 +12,9 @@ import java.time.LocalDateTime;
 @Setter
 @ToString
 public class DisplayInfoDto {
-    private int categoryId;
+    private Integer categoryId;
     private String categoryName;
-    private int displayInfoId;
+    private Integer displayInfoId;
     private String email;
     private String homepage;
     private String openingHours;
@@ -24,7 +24,7 @@ public class DisplayInfoDto {
     private String productContent;
     private String productDescription;
     private String productEvent;
-    private int productId;
+    private Integer productId;
     private String telephone;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;

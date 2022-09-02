@@ -3,7 +3,6 @@ package refactor.naver.reserve.reserveweb_refactor.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import refactor.naver.reserve.reserveweb_refactor.entity.ReservationPrice;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ import java.util.List;
 @ToString
 public class ReservationRequestDto {
     private int displayInfoId;
-    private List<ReservationPrice> prices;
+    private List<ReservationInfoPriceDto> prices;
     private int productId;
     private String reservationName;
     private String reservationTelephone;

@@ -1,14 +1,14 @@
 package refactor.naver.reserve.reserveweb_refactor.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity(name = "reservation_info_price")
 @Getter
 @Setter
-public class ReservationInfoPrice {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public class ReservationInfoPrice extends SystemDate {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
@@ -21,4 +21,11 @@ public class ReservationInfoPrice {
     private ProductPrice productPrice;
 
     private int count;
+
+    @Builder
+    public ReservationInfoPrice(ReservationInfo reservationInfo, ProductPrice productPrice, int count) {
+        this.reservationInfo = reservationInfo;
+        this.productPrice = productPrice;
+        this.count = count;
+    }
 }

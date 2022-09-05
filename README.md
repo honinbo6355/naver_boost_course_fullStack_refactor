@@ -2,13 +2,14 @@
 
 네이버 부스트코스 강의 참고해 기술스택 변경으로 재구성한 클론 프로젝트
 
-- 개발 언어, 프레임워크, 라이브러리 : SpringBoot, Spring Security, Spring Data JPA, Thymeleaf, JWT, Querydsl, MySQL, AWS, Javascript, jQuery, Ajax
+- 개발 언어, 프레임워크, 라이브러리 : SpringBoot, Spring Security, Spring Data JPA, Thymeleaf, JWT, Querydsl, MySQL, AWS, Javascript, jQuery, Ajax, Redis, Docker
 
 - 주요 기능
   - 회원가입/로그인, 카테고리, 메인페이지, 상세페이지, 댓글, 예약하기
 
 - 특이 사항
   - Spring Security를 활용한 토큰(jwt) 기반 로그인
+  - redis를 활용한 refreshToken 관리
   - 기존의 MyBatis로 구현한 코드를 JPA로 재구현 진행
   - Join, 조건문이 복잡한 쿼리들은 QueryDSL 활용해서 해결
   - 무분별한 Dom Element Selector 방지를 위한 캐싱 활용

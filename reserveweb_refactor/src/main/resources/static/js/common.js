@@ -9,6 +9,13 @@ const common = (function() {
 
         displayInfoObj : {},
 
+        headerView : {
+            init : function() {
+                $(document).on("click", "#mypage", function() {
+                    window.location.href = "/myPage";
+                });
+            }
+        },
         productImageView : {
             init : function() {
                 this.cacheDom();
@@ -169,3 +176,4 @@ function checkExpireToken() {
 }
 
 setInterval(checkExpireToken, DAY_OF_MILL_SECOND);
+common.headerView.init();

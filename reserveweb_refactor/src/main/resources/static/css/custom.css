@@ -1,3 +1,7 @@
 .group_visual .visual_img .item {
     width: 414px !important;
 }
+
+.section_my .wrap_mylist .list_cards .card {
+    margin-top: 55px !important;
+}

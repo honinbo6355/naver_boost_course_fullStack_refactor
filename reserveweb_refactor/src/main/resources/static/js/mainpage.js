@@ -14,9 +14,6 @@
 		eventListener : function() {
 		    $("#totalList").on("click", mainPage.selectTotalList);
 			$("#moreViewBtn").on("click", mainPage.moreView);
-			$("#mypage").on("click", function() {
-				window.location.href = "/myPage";
-			})
 		},
 
 		getProducts : function(id, viewCount) {

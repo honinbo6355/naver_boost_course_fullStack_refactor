@@ -47,6 +47,12 @@ public class ReservationInfo extends SystemDate {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
+    private String reserveNumber;
+
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private Orders orders;
+
     public ReservationInfo addPrice(ReservationInfoPrice price) {
         if (price == null) {
             throw new NullPointerException();

@@ -10,9 +10,12 @@ import refactor.naver.reserve.reserveweb_refactor.mapper.*;
 import refactor.naver.reserve.reserveweb_refactor.repository.*;
 import refactor.naver.reserve.reserveweb_refactor.service.ReservationService;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,7 +29,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final DisplayInfoMapper displayInfoMapper;
     private final ProductImageMapper productImageMapper;
     private final ProductPriceMapper productPriceMapper;
-    private final ReservationRequestMapper reservationRequestMapper;
+    private final ReservationInfoMapper reservationInfoMapper;
     private final ReservationResponseMapper reservationResponseMapper;
 
     public ReservationServiceImpl(DisplayInfoRepository displayInfoRepository,
@@ -38,7 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
                                   DisplayInfoMapper displayInfoMapper,
                                   ProductImageMapper productImageMapper,
                                   ProductPriceMapper productPriceMapper,
-                                  ReservationRequestMapper reservationRequestMapper,
+                                  ReservationInfoMapper reservationInfoMapper,
                                   ReservationResponseMapper reservationResponseMapper) {
         this.displayInfoRepository = displayInfoRepository;
         this.productImageRepository = productImageRepository;
@@ -49,7 +52,7 @@ public class ReservationServiceImpl implements ReservationService {
         this.displayInfoMapper = displayInfoMapper;
         this.productImageMapper = productImageMapper;
         this.productPriceMapper = productPriceMapper;
-        this.reservationRequestMapper = reservationRequestMapper;
+        this.reservationInfoMapper = reservationInfoMapper;
         this.reservationResponseMapper = reservationResponseMapper;
     }
 
@@ -64,6 +67,10 @@ public class ReservationServiceImpl implements ReservationService {
 
         Random random = new Random();
         int randDay = random.nextInt(5) + 1;
+        String reserveDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"));
+        String reserveNumber = String.valueOf(new BigInteger(
+                UUID.randomUUID().toString().replace("-", ""), 16))
+                .substring(0, 5);
 
         String reservationDate = LocalDate.now().plusDays(randDay).toString();
 
@@ -71,6 +78,7 @@ public class ReservationServiceImpl implements ReservationService {
         reservationResponseDto.setProductImages(productImageMapper.toDto(productImages));
         reservationResponseDto.setPrices(productPriceMapper.toDto(prices));
         reservationResponseDto.setReservationDate(reservationDate);
+        reservationResponseDto.setReserveNumber(reserveDate+reserveNumber);
 
         return reservationResponseDto;
     }
@@ -78,10 +86,10 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createReservation(String email, ReservationRequestDto reservationRequestDto) throws Exception {
-        ReservationInfo reservationInfo = reservationRequestMapper.toEntity(reservationRequestDto);
+        ReservationInfo reservationInfo = reservationInfoMapper.toEntity(reservationRequestDto.getReserveInfo());
         User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElseThrow(NullPointerException::new);
 
-        reservationRequestDto.getPrices()
+        reservationRequestDto.getReserveInfo().getPrices()
                 .stream()
                 .forEach(priceDto -> {
                     ProductPrice productPrice = productPriceRepository.findById(priceDto.getProductPriceId()).orElseThrow(NullPointerException::new);

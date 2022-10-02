@@ -5,14 +5,31 @@
     let prices = [];
     let totalCount = 0;
 
-    let payload = {
-        "displayInfoId" : Number(displayInfoId),
-        "prices" : [],
-        "productId" : 0,
-        "reservationName" : "",
-        "reservationTelephone" : "",
-        "reservationEmail" : "",
-        "reservationYearMonthDay" : ""
+    let reserveRequest = {
+        reserveInfo : {
+            "displayInfoId" : Number(displayInfoId),
+            "prices" : [],
+            "productId" : 0,
+            "reservationName" : "",
+            "reservationTelephone" : "",
+            "reservationEmail" : "",
+            "reservationYearMonthDay" : "",
+            "reserveNumber" : ""
+        },
+        ordersInfo : {}
+    };
+
+    let paymentInfo = {
+        pg: "kakaopay.TC0ONETIME",
+        pay_method: "card",
+        merchant_uid: null,
+        name: null,
+        amount : null,
+        buyer_email : null,
+        buyer_name : null,
+        buyer_tel : null,
+        buyer_addr : null,
+        buyer_postcode : null
     };
 
     let formValidCheck = {
@@ -21,6 +38,9 @@
         "reservationEmail" : false,
         "terms" : false
     };
+
+    var IMP = window.IMP; // 생략 가능
+    IMP.init("imp52577363"); // 예: imp00000000
 
     const reserveController = {
         init : function() {
@@ -46,8 +66,10 @@
                 common.productImageObj.productImages = response.productImages;
                 common.displayInfoObj = response.displayInfo;
 
-                payload.productId = response.displayInfo.productId;
-                payload.reservationYearMonthDay = response.reservationDate;
+                reserveRequest.reserveInfo.productId = response.displayInfo.productId;
+                reserveRequest.reserveInfo.reservationYearMonthDay = response.reservationDate;
+                reserveRequest.reserveInfo.reserveNumber = response.reserveNumber;
+
                 prices = response.prices;
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("textStatus : " + textStatus);
@@ -67,7 +89,7 @@
         },
         bindEvent : function() {
             prices.forEach(function(item, index) {
-                payload.prices[index] = {
+                reserveRequest.reserveInfo.prices[index] = {
                     "productPriceId" : item.productPriceId,
                     "count" : 0
                 };
@@ -127,7 +149,7 @@
             $totalTypePrice.text(amountVal * Number($typePrice.text()));
         },
         calculatePayloadProductPriceCount : function(index, count) {
-            payload.prices[index].count += count;
+            reserveRequest.reserveInfo.prices[index].count += count;
         },
         calculateTotalCount : function(count) {
             totalCount += count;
@@ -158,7 +180,7 @@
             this.$reserveDiv.on("click", this.clickReserveBtn);
         },
         inputName : function() {
-            payload.reservationName = $(this).val().trim();
+            reserveRequest.reserveInfo.reservationName = $(this).val().trim();
 
             if ($(this).val().trim().length === 0) {
                 formValidCheck.reservationName = false;
@@ -169,7 +191,9 @@
             reserveFormView.validReserveBtn();
         },
         inputTel : function() {
-            payload.reservationTelephone = $(this).val().trim();
+            $(this).val($(this).val().replace(/[^0-9]/gi,"") );
+
+            reserveRequest.reserveInfo.reservationTelephone = $(this).val().trim();
 
             if ($(this).val().trim().length === 0) {
                 formValidCheck.reservationTelephone = false;
@@ -180,7 +204,7 @@
             reserveFormView.validReserveBtn();
         },
         inputEmail : function() {
-            payload.reservationEmail = $(this).val();
+            reserveRequest.reserveInfo.reservationEmail = $(this).val();
 
             if ($(this).val().trim().length === 0) {
                 formValidCheck.reservationEmail = false;
@@ -202,21 +226,39 @@
             }
         },
         clickReserveBtn : function() {
-            $.ajax({
-                url: "/api/reserve",
-                type: "POST",
-                data: JSON.stringify(payload),
-                contentType: "application/json; charset=utf-8",
-                headers : {"Authorization" : localStorage.getItem("grantType") + " " + localStorage.getItem("accessToken")}
-            }).done(function(response, textStatus, jqXHR) {
-                console.log("response : " + response);
-                window.location.href = "/mainpage";
-            }).fail(function(jqXHR, textStatus, errorThrown) {
-                console.log("textStatus : " + textStatus);
+            paymentInfo.merchant_uid = reserveRequest.reserveInfo.reserveNumber;
+            paymentInfo.name = reserveRequest.reserveInfo.reservationName;
+            paymentInfo.amount = prices.reduce(function (accumulator, currentValue) {
+                return accumulator + currentValue.discountedPrice;
+            }, 0);
+            paymentInfo.buyer_email = reserveRequest.reserveInfo.reservationEmail;
+            paymentInfo.buyer_name = reserveRequest.reserveInfo.reservationName;
+            paymentInfo.buyer_tel = reserveRequest.reserveInfo.reservationTelephone;
+
+            IMP.request_pay(paymentInfo, function (rsp) { // callback
+                if (rsp.success) {
+                    reserveRequest.ordersInfo = rsp;
+
+                    // 결제 성공 시 로직,
+                    $.ajax({
+                        url: "/api/reserve",
+                        type: "POST",
+                        data: JSON.stringify(reserveRequest),
+                        contentType: "application/json; charset=utf-8",
+                        headers : {"Authorization" : localStorage.getItem("grantType") + " " + localStorage.getItem("accessToken")}
+                    }).done(function(response, textStatus, jqXHR) {
+                        console.log("response : " + response);
+                        window.location.href = "/mainpage";
+                    }).fail(function(jqXHR, textStatus, errorThrown) {
+                        console.log("textStatus : " + textStatus);
+                    });
+                } else {
+                    // 결제 실패 시 로직,
+                }
             });
         },
         render : function() {
-            this.$reservationDate.text(getDateCommaStr_yyyymmdd(payload.reservationYearMonthDay));
+            this.$reservationDate.text(getDateCommaStr_yyyymmdd(reserveRequest.reserveInfo.reservationYearMonthDay));
         }
     };
 

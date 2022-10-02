@@ -14,4 +14,5 @@ public class ReservationResponseDto {
     private List<ProductImageDto> productImages;
     private List<ProductPriceDto> prices;
     private String reservationDate;
+    private String reserveNumber;
 }

@@ -9,8 +9,8 @@ import java.util.List;
 @Getter
 @Setter
 public class ReservationRequestDto {
-    private ReserveInfo reserveInfo;
-    private OrdersInfo ordersInfo;
+    private ReservationRequestDto.ReserveInfo reserveInfo;
+    private ReservationRequestDto.OrdersInfo ordersInfo;
 
     @Getter
     @Setter

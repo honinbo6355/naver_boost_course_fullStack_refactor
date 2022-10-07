@@ -62,4 +62,9 @@ public class ReservationInfo extends SystemDate {
 
         return this;
     }
+
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+        orders.setReservationInfo(this);
+    }
 }

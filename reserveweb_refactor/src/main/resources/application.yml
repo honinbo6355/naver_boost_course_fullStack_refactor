@@ -39,3 +39,14 @@ jwt:
   #HS512 알고리즘을 사용할 것이기 때문에 512bit, 즉 64byte 이상의 secret key를 사용해야 한다.
   secret: 4oCYc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXQtc2lsdmVybmluZS10ZWNoLXNwcmluZy1ib290LWp3dC10dXRvcmlhbC1zZWNyZXTigJkK
 
+import-api:
+  impKey: 3354871456812132
+  impSecret: F2Ht3OgNEg6orfI6B6A0O0LYhRQRVMEfAp2XTlj50fR4n7Mt0ZVGWFukczVhTGsr3NAnB6A9gO0019M1
+  baseUrl: https://api.iamport.kr
+  kakaopayCid: TC0ONETIME
+  api:
+    authenticate: users/getToken
+
+
+
+

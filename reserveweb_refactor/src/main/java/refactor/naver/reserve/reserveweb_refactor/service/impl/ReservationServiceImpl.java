@@ -31,6 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
     private final ProductPriceMapper productPriceMapper;
     private final ReservationInfoMapper reservationInfoMapper;
     private final ReservationResponseMapper reservationResponseMapper;
+    private final OrderMapper orderMapper;
 
     public ReservationServiceImpl(DisplayInfoRepository displayInfoRepository,
                                   ProductImageRepository productImageRepository,
@@ -42,7 +43,8 @@ public class ReservationServiceImpl implements ReservationService {
                                   ProductImageMapper productImageMapper,
                                   ProductPriceMapper productPriceMapper,
                                   ReservationInfoMapper reservationInfoMapper,
-                                  ReservationResponseMapper reservationResponseMapper) {
+                                  ReservationResponseMapper reservationResponseMapper,
+                                  OrderMapper orderMapper) {
         this.displayInfoRepository = displayInfoRepository;
         this.productImageRepository = productImageRepository;
         this.productPriceRepository = productPriceRepository;
@@ -54,6 +56,7 @@ public class ReservationServiceImpl implements ReservationService {
         this.productPriceMapper = productPriceMapper;
         this.reservationInfoMapper = reservationInfoMapper;
         this.reservationResponseMapper = reservationResponseMapper;
+        this.orderMapper = orderMapper;
     }
 
     @Override
@@ -88,6 +91,14 @@ public class ReservationServiceImpl implements ReservationService {
     public void createReservation(String email, ReservationRequestDto reservationRequestDto) throws Exception {
         ReservationInfo reservationInfo = reservationInfoMapper.toEntity(reservationRequestDto.getReserveInfo());
         User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElseThrow(NullPointerException::new);
+        Orders orders = orderMapper.toEntity(reservationRequestDto.getOrdersInfo());
+
+        /*
+            1. 인증 정보 발급
+            2. 결제 정보 조회
+            3. 요청값의 금액과 비교(금액 변경 체크)
+            4. 동일하면 insert
+         */
 
         reservationRequestDto.getReserveInfo().getPrices()
                 .stream()
@@ -104,6 +115,7 @@ public class ReservationServiceImpl implements ReservationService {
                 });
         reservationInfo.setUser(user);
         reservationInfo.setStatus(ReservationStatus.CONFIRMED);
+        reservationInfo.setOrders(orders);
 
         reservationInfoRepository.save(reservationInfo);
     }

@@ -46,6 +46,7 @@ import-api:
   kakaopayCid: TC0ONETIME
   api:
     authenticate: users/getToken
+    getPaymentsInfo: payments/{imp_uid}
 
 
 

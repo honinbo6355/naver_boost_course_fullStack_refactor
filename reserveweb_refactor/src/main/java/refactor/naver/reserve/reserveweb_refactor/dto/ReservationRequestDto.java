@@ -22,6 +22,7 @@ public class ReservationRequestDto {
         private String reservationTelephone;
         private String reservationEmail;
         private String reservationYearMonthDay;
+        private String reserveNumber;
     }
 
     @Getter

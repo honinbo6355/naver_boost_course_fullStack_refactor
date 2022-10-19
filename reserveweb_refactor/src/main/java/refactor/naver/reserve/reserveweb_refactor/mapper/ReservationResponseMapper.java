@@ -4,7 +4,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationInfoDto;
-import refactor.naver.reserve.reserveweb_refactor.dto.ReservationInfoResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.entity.ReservationInfo;
 import refactor.naver.reserve.reserveweb_refactor.entity.ReservationInfoPrice;
 

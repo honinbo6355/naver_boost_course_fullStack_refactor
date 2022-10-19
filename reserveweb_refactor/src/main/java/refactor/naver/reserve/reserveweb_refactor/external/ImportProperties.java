@@ -22,5 +22,6 @@ public class ImportProperties {
     @Setter
     public static class Api {
         private String authenticate;
+        private String getPaymentsInfo;
     }
 }

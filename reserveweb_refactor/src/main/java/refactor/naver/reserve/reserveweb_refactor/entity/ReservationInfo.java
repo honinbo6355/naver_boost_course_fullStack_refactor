@@ -53,6 +53,9 @@ public class ReservationInfo extends SystemDate {
     @JoinColumn(name = "order_id")
     private Orders orders;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "reservationInfo")
+    private Set<Comment> comments = new HashSet<>();
+
     public ReservationInfo addPrice(ReservationInfoPrice price) {
         if (price == null) {
             throw new NullPointerException();

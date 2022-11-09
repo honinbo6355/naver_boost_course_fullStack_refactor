@@ -18,13 +18,6 @@ public interface ReservationResponseMapper extends EntityMapper<ReservationInfoD
     @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "reservationInfoId", source = "id")
     @Mapping(target = "reservationTelephone", source = "reservationTel")
-    @Mapping(target = "totalPrice", source = "reservationInfoPrices", qualifiedByName = "mappingTotalPrice")
+    @Mapping(target = "totalPrice", source = "orders.paidAmount")
     ReservationInfoDto toDto(ReservationInfo reservationInfo);
-
-    @Named("mappingTotalPrice")
-    default Integer mappingTotalPrice(Set<ReservationInfoPrice> reservationInfoPrices) {
-        return reservationInfoPrices.stream()
-                .mapToInt(reservationInfoPrice -> reservationInfoPrice.getProductPrice().getDiscountedPrice() * reservationInfoPrice.getCount())
-                .sum();
-    }
 }

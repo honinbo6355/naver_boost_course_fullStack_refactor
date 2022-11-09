@@ -5,7 +5,9 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/boost_refactor?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Seoul
-    username: dbuser1
+#    username: dbuser1
+#    password: 123123
+    username: root
     password: 123123
   jpa:
 #    hibernate:
@@ -44,6 +46,7 @@ import-api:
   impSecret: F2Ht3OgNEg6orfI6B6A0O0LYhRQRVMEfAp2XTlj50fR4n7Mt0ZVGWFukczVhTGsr3NAnB6A9gO0019M1
   baseUrl: https://api.iamport.kr
   kakaopayCid: TC0ONETIME
+  storeCode: imp52577363
   api:
     authenticate: users/getToken
     getPaymentsInfo: payments/{imp_uid}

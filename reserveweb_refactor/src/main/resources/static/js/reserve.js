@@ -20,7 +20,7 @@
     };
 
     let paymentInfo = {
-        pg: "kakaopay.TC0ONETIME",
+        pg: null,
         pay_method: "card",
         merchant_uid: null,
         name: null,
@@ -40,7 +40,6 @@
     };
 
     var IMP = window.IMP; // 생략 가능
-    IMP.init("imp52577363"); // 예: imp00000000
 
     const reserveController = {
         init : function() {
@@ -69,8 +68,9 @@
                 reserveRequest.reserveInfo.productId = response.displayInfo.productId;
                 reserveRequest.reserveInfo.reservationYearMonthDay = response.reservationDate;
                 reserveRequest.reserveInfo.reserveNumber = response.reserveNumber;
-
                 prices = response.prices;
+                paymentInfo.pg = "kakaopay." + response.kakaopayCid;
+                IMP.init(response.storeCode);
             }).fail(function(jqXHR, textStatus, errorThrown) {
                 console.log("textStatus : " + textStatus);
                 window.location.href = "/mainpage"
@@ -254,6 +254,7 @@
                     });
                 } else {
                     // 결제 실패 시 로직,
+                    console.log("아임포트 결제 실패");
                 }
             });
         },

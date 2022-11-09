@@ -15,12 +15,15 @@ public interface CommentRepository extends JpaRepository<Comment, Integer> {
             "from Comment a " +
             "join fetch a.reservationInfo b " +
             "left join fetch a.commentImage c " +
-            "left join fetch c.fileInfo d")
+            "left join fetch c.fileInfo d " +
+            "where b.product.id = :productId")
     List<Comment> findComments(@Param("productId") int productId);
 
     @Query(value =
             "select ifnull(round(avg(score), 1), 0.0) " +
-            "from reservation_user_comment " +
-            "where product_id = :productId", nativeQuery = true)
+            "from reservation_user_comment a " +
+            "inner join reservation_info b " +
+            "on a.reservation_info_id = b.id " +
+            "where b.product_id = :productId", nativeQuery = true)
     Double findAverageScore(@Param("productId") int productId);
 }

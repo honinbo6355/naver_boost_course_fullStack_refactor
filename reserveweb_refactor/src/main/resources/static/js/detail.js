@@ -48,7 +48,7 @@
             this.$reviewContainer = $("#reviewContainer");
         },
         render : function() {
-            this.$scoreGraph.css("width", (averageScore/5.0) * 100);
+            this.$scoreGraph.css("width", (averageScore/5.0) * 100 + "%");
             this.$averageScore.html(averageScore.toFixed(1));
             this.$totalCommentCnt.html(commentArr.length + "건");
 
@@ -71,7 +71,8 @@
             });
 
             if (commentArr.length > 3) {
-                $("#reviewMore").attr("href", "/review/" + displayInfoId).show();
+                // $("#reviewMore").attr("href", "/review/" + displayInfoId).show();
+                $("#reviewMore").show();
             }
         }
     };

@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "orders")
 @Getter
 @Setter
-public class Orders {
+public class Orders extends SystemDate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

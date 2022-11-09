@@ -12,6 +12,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import refactor.naver.reserve.reserveweb_refactor.dto.*;
 import refactor.naver.reserve.reserveweb_refactor.entity.User;
+import refactor.naver.reserve.reserveweb_refactor.errors.CustomException;
 import refactor.naver.reserve.reserveweb_refactor.jwt.JwtFilter;
 import refactor.naver.reserve.reserveweb_refactor.jwt.TokenProvider;
 import refactor.naver.reserve.reserveweb_refactor.service.*;
@@ -117,8 +118,10 @@ public class ReserveApiController {
         try {
             reservationService.createReservation(principal.getName(), reservationRequestDto);
             response = new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (CustomException e1) {
+            throw e1;
+        } catch (Exception e2) {
+            e2.printStackTrace();
             response = new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 

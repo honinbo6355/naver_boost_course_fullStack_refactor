@@ -6,6 +6,13 @@ import refactor.naver.reserve.reserveweb_refactor.dto.ReservationInfoResponseDto
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationRequestDto;
 import refactor.naver.reserve.reserveweb_refactor.dto.ReservationResponseDto;
 import refactor.naver.reserve.reserveweb_refactor.entity.*;
+import refactor.naver.reserve.reserveweb_refactor.errors.CustomException;
+import refactor.naver.reserve.reserveweb_refactor.errors.ErrorCode;
+import refactor.naver.reserve.reserveweb_refactor.external.ImportProperties;
+import refactor.naver.reserve.reserveweb_refactor.external.ImportWebClient;
+import refactor.naver.reserve.reserveweb_refactor.external.dto.AuthenticateDto;
+import refactor.naver.reserve.reserveweb_refactor.external.dto.GetPaymentsInfoDto;
+import refactor.naver.reserve.reserveweb_refactor.external.dto.common.ResultData;
 import refactor.naver.reserve.reserveweb_refactor.mapper.*;
 import refactor.naver.reserve.reserveweb_refactor.repository.*;
 import refactor.naver.reserve.reserveweb_refactor.service.ReservationService;
@@ -32,6 +39,8 @@ public class ReservationServiceImpl implements ReservationService {
     private final ReservationInfoMapper reservationInfoMapper;
     private final ReservationResponseMapper reservationResponseMapper;
     private final OrderMapper orderMapper;
+    private final ImportWebClient importWebClient;
+    private final ImportProperties importProperties;
 
     public ReservationServiceImpl(DisplayInfoRepository displayInfoRepository,
                                   ProductImageRepository productImageRepository,
@@ -44,7 +53,9 @@ public class ReservationServiceImpl implements ReservationService {
                                   ProductPriceMapper productPriceMapper,
                                   ReservationInfoMapper reservationInfoMapper,
                                   ReservationResponseMapper reservationResponseMapper,
-                                  OrderMapper orderMapper) {
+                                  OrderMapper orderMapper,
+                                  ImportWebClient importWebClient,
+                                  ImportProperties importProperties) {
         this.displayInfoRepository = displayInfoRepository;
         this.productImageRepository = productImageRepository;
         this.productPriceRepository = productPriceRepository;
@@ -57,6 +68,8 @@ public class ReservationServiceImpl implements ReservationService {
         this.reservationInfoMapper = reservationInfoMapper;
         this.reservationResponseMapper = reservationResponseMapper;
         this.orderMapper = orderMapper;
+        this.importWebClient = importWebClient;
+        this.importProperties = importProperties;
     }
 
     @Override
@@ -82,6 +95,8 @@ public class ReservationServiceImpl implements ReservationService {
         reservationResponseDto.setPrices(productPriceMapper.toDto(prices));
         reservationResponseDto.setReservationDate(reservationDate);
         reservationResponseDto.setReserveNumber(reserveDate+reserveNumber);
+        reservationResponseDto.setKakaopayCid(importProperties.getKakaopayCid());
+        reservationResponseDto.setStoreCode(importProperties.getStoreCode());
 
         return reservationResponseDto;
     }
@@ -93,6 +108,11 @@ public class ReservationServiceImpl implements ReservationService {
         User user = userRepository.findOneWithUserAuthoritiesByEmail(email).orElseThrow(NullPointerException::new);
         Orders orders = orderMapper.toEntity(reservationRequestDto.getOrdersInfo());
 
+        ResultData<GetPaymentsInfoDto> getPaymentsInfoDto = importWebClient.getPaymentsInfo(reservationRequestDto.getOrdersInfo().getImpUid());
+
+        if (!getPaymentsInfoDto.getResponse().getAmount().equals(reservationRequestDto.getOrdersInfo().getPaidAmount())) {
+            throw new CustomException(ErrorCode.NOT_INVALID_RESERVE_AMOUNT);
+        }
         /*
             1. 인증 정보 발급
             2. 결제 정보 조회

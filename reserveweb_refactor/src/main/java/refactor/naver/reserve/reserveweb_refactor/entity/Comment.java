@@ -18,10 +18,6 @@ public class Comment extends SystemDate {
     private int id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "reservation_info_id")
     private ReservationInfo reservationInfo;
 

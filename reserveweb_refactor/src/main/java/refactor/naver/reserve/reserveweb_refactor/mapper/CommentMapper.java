@@ -20,7 +20,6 @@ public interface CommentMapper extends EntityMapper<CommentDto, Comment> {
     @Override
     @Mapping(target = "commentId", source = "id")
     @Mapping(target = "commentImages", source = "commentImage")
-    @Mapping(target = "productId", source = "product.id")
     @Mapping(target = "reservationDate", source = "reservationInfo.reservationDate")
     @Mapping(target = "reservationEmail", source = "reservationInfo.reservationEmail")
     @Mapping(target = "reservationInfoId", source = "reservationInfo.id")

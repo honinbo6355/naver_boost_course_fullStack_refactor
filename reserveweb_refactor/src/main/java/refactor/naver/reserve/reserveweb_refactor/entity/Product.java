@@ -39,8 +39,5 @@ public class Product extends SystemDate {
     private Set<ReservationInfo> reservationInfos;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
-    private Set<Comment> comments;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
     private Set<ProductPrice> productPrices;
 }

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ViewController {
 
-    @GetMapping("mainpage")
+    @GetMapping(value = {"/", "mainpage"})
     public ModelAndView mainPage() {
         return new ModelAndView("page/mainpage");
     }

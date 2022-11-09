@@ -16,6 +16,7 @@ public class ImportProperties {
     private String impSecret;
     private String baseUrl;
     private String kakaopayCid;
+    private String storeCode;
     private Api api;
 
     @Getter

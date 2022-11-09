@@ -15,7 +15,6 @@ public class CommentDto {
     private String comment;
     private int commentId;
     private CommentImageDto commentImages;
-    private int productId;
     private String reservationDate;
     private String reservationEmail;
     private int reservationInfoId;

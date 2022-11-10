@@ -1,0 +1,19 @@
+server:
+  port: 8083
+
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/boost_refactor?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Seoul
+    #    username: dbuser1
+    #    password: 123123
+    username: root
+    password: 123123
+
+
+
+
+

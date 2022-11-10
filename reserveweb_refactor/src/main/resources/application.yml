@@ -1,26 +1,18 @@
-server:
-  port: 8083
-
 spring:
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/boost_refactor?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Seoul
-#    username: dbuser1
-#    password: 123123
-    username: root
-    password: 123123
   jpa:
-#    hibernate:
-#      ddl-auto: create-drop
+    hibernate:
+      ddl-auto: none
     properties:
       hibernate:
-#        format_sql: true
+        format_sql: false
   thymeleaf:
     cache: false
 
   redis:
     host: localhost
     port: 6379
+  profiles:
+    active: local
 
 #logging:
 #  level:

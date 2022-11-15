@@ -51,4 +51,12 @@ public class ViewController {
 
         return mav;
     }
+
+    @GetMapping("signup")
+    public ModelAndView signup() {
+        ModelAndView mav = new ModelAndView("page/signup");
+        mav.addObject("signup", true);
+
+        return mav;
+    }
 }

@@ -16,9 +16,15 @@
             this.$email = $("#email");
             this.$password = $("#password");
             this.$loginBtn = $("#loginBtn");
+            this.$signupBtn = $("#signupBtn");
         },
         bindEvent : function() {
             this.$loginBtn.on("click", this.clickLoginBtn);
+            this.$signupBtn.on("click", function(e) {
+                e.preventDefault();
+
+                window.location.href = "/signup";
+            })
         },
         clickLoginBtn : function(e) {
             e.preventDefault();

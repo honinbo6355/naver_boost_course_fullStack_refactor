@@ -134,6 +134,8 @@ public class ReserveApiController {
         try {
             userService.signup(signup);
             response = new ResponseEntity<>(HttpStatus.OK);
+        } catch (CustomException ce) {
+            throw ce;
         } catch (Exception e) {
             e.printStackTrace();
             response = new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

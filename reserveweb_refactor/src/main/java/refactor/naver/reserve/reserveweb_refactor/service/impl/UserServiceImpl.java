@@ -7,6 +7,8 @@ import refactor.naver.reserve.reserveweb_refactor.dto.UserRequestDto;
 import refactor.naver.reserve.reserveweb_refactor.entity.Authority;
 import refactor.naver.reserve.reserveweb_refactor.entity.User;
 import refactor.naver.reserve.reserveweb_refactor.entity.UserAuthority;
+import refactor.naver.reserve.reserveweb_refactor.errors.CustomException;
+import refactor.naver.reserve.reserveweb_refactor.errors.ErrorCode;
 import refactor.naver.reserve.reserveweb_refactor.repository.AuthorityRepository;
 import refactor.naver.reserve.reserveweb_refactor.repository.UserRepository;
 import refactor.naver.reserve.reserveweb_refactor.service.UserService;
@@ -29,7 +31,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void signup(UserRequestDto.Signup signup) throws Exception {
         if (userRepository.findOneWithUserAuthoritiesByEmail(signup.getEmail()).orElse(null) != null) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            throw new CustomException(ErrorCode.ALREADY_EXIST_USER);
         }
 
         Authority authority = authorityRepository.findByAuthorityName("ROLE_USER");

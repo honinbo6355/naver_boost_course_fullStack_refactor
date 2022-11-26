@@ -11,7 +11,7 @@ spring:
     #    username: dbuser1
     #    password: 123123
     username: root
-    password: 123123
+    password: P@ssw0rd
 
 
 

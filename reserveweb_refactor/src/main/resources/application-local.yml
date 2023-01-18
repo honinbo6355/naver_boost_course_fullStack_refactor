@@ -5,13 +5,27 @@ spring:
   config:
     activate:
       on-profile: local
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/boost_refactor?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+#    #    username: dbuser1
+#    #    password: 123123
+#    username: root
+#    password: 123123
+
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/boost_refactor?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-    #    username: dbuser1
-    #    password: 123123
-    username: root
-    password: 123123
+    master:
+      hikari:
+        username: root
+        password: P@ssw0rd
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3308/reserve_db
+    slave:
+      hikari:
+        username: root
+        password: P@ssw0rd
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3309/reserve_db
 
 
 

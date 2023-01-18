@@ -1,0 +1,50 @@
+version: "2"
+services:
+  db-master:
+    build:
+      context: ./
+      dockerfile: master/Dockerfile
+    restart: always
+    container_name: mysql-reserve-master
+    environment:
+      MYSQL_DATABASE: reserve_db
+      MYSQL_USER: testuser1
+      MYSQL_PASSWORD: 123123
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+    volumes:
+      - my-db-master:/var/lib/mysql
+      - my-db-master:/var/lib/mysql-files
+    ports:
+      - '3308:3306'
+    networks:
+      - net-mysql
+
+  db-slave:
+    build:
+      context: ./
+      dockerfile: slave/Dockerfile
+    restart: always
+    container_name: mysql-reserve-slave
+    environment:
+      MYSQL_DATABASE: reserve_db
+      MYSQL_USER: testuser1
+      MYSQL_PASSWORD: 123123
+      MYSQL_ROOT_PASSWORD: P@ssw0rd
+    volumes:
+      - my-db-slave:/var/lib/mysql
+      - my-db-slave:/var/lib/mysql-files
+    ports:
+      - '3309:3306'
+    networks:
+      - net-mysql
+
+volumes:
+  my-db-master:
+  my-db-slave:
+
+networks:
+  net-mysql:
+    driver: bridge
+
+
+

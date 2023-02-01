@@ -38,6 +38,14 @@ services:
     networks:
       - net-mysql
 
+  nginx:
+    container_name: nginx
+    image: nginx:1.21.5-alpine
+    ports:
+      - 80:80
+    volumes:
+      - ./proxy/nginx.conf:/etc/nginx/nginx.conf
+
 volumes:
   my-db-master:
   my-db-slave:

@@ -2,13 +2,27 @@ spring:
   config:
     activate:
       on-profile: dev
+      # local test
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/boost_refactor?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+#    username: root
+#    password: 123123
+
+  # ec2 docker mysql
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/reserve_db?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+#    username: root
+#    password: P@ssw0rd
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/reserve_db?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
-    #    username: dbuser1
-    #    password: 123123
-    username: root
+    url: jdbc:mysql://reserve-database.cvlq1nfdfgea.ap-northeast-2.rds.amazonaws.com:3306/reserve_db?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Seoul
+    username: admin
     password: P@ssw0rd
+
+
 
 
 

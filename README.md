@@ -13,6 +13,7 @@
   - 기존 MyBatis 코드를 JPA로 100% 전환 달성
   - 아임포트 API를 활용한 카카오페이 결제 연동
   - 결제 위변조 검증 로직 학습 및 적용
+  - MySQL Replication 처리
 
 - 참고
   - MyBatis를 활용한 레거시 프로젝트 저장소 : https://github.com/honinbo6355/naver_boost_course
